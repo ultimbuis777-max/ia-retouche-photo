@@ -1,1 +1,12 @@
-data/api-keys.json
+node_modules/
+RAW/
+retouché/
+selected/
+failed/
+exports/
+review/
+advanced/
+logs/
+backups/
+data/*.json
+.env
