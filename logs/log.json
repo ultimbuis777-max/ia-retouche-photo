@@ -1,0 +1,111 @@
+[
+  {
+    "ts": "2026-05-05T22:45:24.637Z",
+    "status": "info",
+    "message": "AgentOrchestrator démarré — pipeline multi-agents actif"
+  },
+  {
+    "ts": "2026-05-05T22:45:24.642Z",
+    "status": "info",
+    "message": "Surveillance active : C:\\Users\\cleme\\Desktop\\IA retouche photo\\RAW"
+  },
+  {
+    "ts": "2026-05-05T22:45:24.643Z",
+    "status": "info",
+    "message": "Dashboard → http://localhost:3000"
+  },
+  {
+    "ts": "2026-05-05T22:45:24.649Z",
+    "status": "info",
+    "message": "Détecté",
+    "file": "MVIMG_20260414_175653_2.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:45:24.650Z",
+    "status": "pending",
+    "file": "MVIMG_20260414_175653_2.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:45:24.651Z",
+    "status": "processing",
+    "file": "MVIMG_20260414_175653_2.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:45:26.080Z",
+    "status": "done",
+    "file": "MVIMG_20260414_175653_2.jpg",
+    "score": 77,
+    "output": "mvimg202604141756532.jpg",
+    "preset": "default",
+    "selected": true
+  },
+  {
+    "ts": "2026-05-05T22:45:26.081Z",
+    "status": "info",
+    "message": "Détecté",
+    "file": "test.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:45:26.082Z",
+    "status": "duplicate",
+    "type": "DUPLICATE_IMAGE",
+    "file": "test.jpg",
+    "message": "Doublon ignoré : test.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.844Z",
+    "status": "info",
+    "message": "AgentOrchestrator démarré — pipeline multi-agents actif"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.848Z",
+    "status": "info",
+    "message": "Surveillance active : C:\\Users\\cleme\\Desktop\\IA retouche photo\\RAW"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.849Z",
+    "status": "info",
+    "message": "Dashboard → http://localhost:3000"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.860Z",
+    "status": "info",
+    "message": "Détecté",
+    "file": "MVIMG_20260414_175653_2.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.861Z",
+    "status": "duplicate",
+    "type": "DUPLICATE_IMAGE",
+    "file": "MVIMG_20260414_175653_2.jpg",
+    "message": "Doublon ignoré : MVIMG_20260414_175653_2.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.862Z",
+    "status": "info",
+    "message": "Détecté",
+    "file": "test.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:47:39.863Z",
+    "status": "duplicate",
+    "type": "DUPLICATE_IMAGE",
+    "file": "test.jpg",
+    "message": "Doublon ignoré : test.jpg"
+  },
+  {
+    "ts": "2026-05-05T22:54:51.796Z",
+    "status": "info",
+    "message": "AgentOrchestrator démarré — pipeline multi-agents actif"
+  },
+  {
+    "ts": "2026-05-05T22:54:51.800Z",
+    "status": "info",
+    "message": "Surveillance active : C:\\Users\\cleme\\Desktop\\IA retouche photo\\RAW"
+  },
+  {
+    "ts": "2026-05-05T22:54:51.800Z",
+    "status": "info",
+    "message": "Dashboard → http://localhost:3000"
+  }
+]

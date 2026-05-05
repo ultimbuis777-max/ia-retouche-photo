@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhotoAgent</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--surface:#161b22;--border:#30363d;
+  --text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;
+  --success:#3fb950;--warning:#d29922;--error:#f85149;--card:#21262d;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+
+/* ── HEADER ── */
+header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 24px;height:54px;display:flex;align-items:center;gap:20px;
+  position:sticky;top:0;z-index:100
+}
+.logo{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.logo span{color:var(--accent)}
+.hdr-nav{display:flex;gap:2px}
+.hdr-nav button{
+  background:none;border:none;padding:6px 14px;border-radius:6px;
+  color:var(--muted);cursor:pointer;font-size:13px;transition:all .15s
+}
+.hdr-nav button:hover{background:var(--border);color:var(--text)}
+.hdr-nav button.on{background:var(--accent);color:#fff}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.dot.active{background:var(--success);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.stat-chip{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:3px 12px;font-size:12px;color:var(--muted)
+}
+.stat-chip span{color:var(--accent);font-weight:600}
+
+/* ── MAIN ── */
+main{max-width:1400px;margin:0 auto;padding:24px}
+.section{display:none}.section.active{display:block}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-btn{
+  background:var(--card);border:1px solid var(--border);color:var(--muted);
+  padding:5px 14px;border-radius:20px;font-size:13px;cursor:pointer;transition:all .15s
+}
+.filter-btn:hover{border-color:var(--accent);color:var(--text)}
+.filter-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.count{margin-left:auto;font-size:12px;color:var(--muted)}
+
+/* ── GALLERY ── */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+@media(max-width:600px){.gallery{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
+.img-card{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s
+}
+.img-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.img-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--surface)}
+.img-card .no-img{
+  width:100%;aspect-ratio:4/3;background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:30px
+}
+.card-info{padding:8px 10px}
+.card-name{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.card-tag{
+  display:inline-block;padding:1px 8px;border-radius:10px;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.4px
+}
+.tag-main   {background:rgba(88,166,255,.12);color:var(--accent);border:1px solid rgba(88,166,255,.25)}
+.tag-portrait{background:rgba(63,185,80,.12);color:var(--success);border:1px solid rgba(63,185,80,.25)}
+.tag-carre  {background:rgba(210,153,34,.12);color:var(--warning);border:1px solid rgba(210,153,34,.25)}
+
+/* ── LOGS ── */
+.log-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.log-head{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.log-body{max-height:600px;overflow-y:auto;font-family:'Courier New',monospace;font-size:12px}
+.log-row{display:grid;grid-template-columns:165px 100px 1fr;gap:10px;padding:6px 16px;border-bottom:1px solid rgba(48,54,61,.4)}
+.log-row:hover{background:var(--card)}
+.log-ts{color:var(--muted)}
+.log-s{font-weight:700}
+.s-done{color:var(--success)}.s-failed{color:var(--error)}
+.s-processing{color:var(--accent)}.s-pending,.s-info{color:var(--muted)}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:64px;color:var(--muted)}
+.empty .ico{font-size:44px;margin-bottom:12px}
+.empty p{font-size:13px;margin-top:6px}
+
+/* ── MODAL ── */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.modal img{max-width:92vw;max-height:92vh;border-radius:8px}
+.modal-info{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(22,27,34,.9);border:1px solid var(--border);border-radius:8px;padding:8px 18px;font-size:12px;color:var(--muted);white-space:nowrap}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--card);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Photo<span>Agent</span></div>
+  <nav class="hdr-nav">
+    <button class="on" onclick="setTab('gallery')">Galerie</button>
+    <button onclick="setTab('logs')">Logs</button>
+  </nav>
+  <div class="hdr-right">
+    <div class="dot" id="dot"></div>
+    <span id="q-status">Inactif</span>
+    <div class="stat-chip">Retouchées : <span id="chip-count">0</span></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- GALLERY -->
+  <div class="section active" id="tab-gallery">
+    <div class="toolbar">
+      <button class="filter-btn on" onclick="setFilter('all',this)">Toutes</button>
+      <button class="filter-btn" onclick="setFilter('main',this)">Principal</button>
+      <button class="filter-btn" onclick="setFilter('portrait',this)">Portrait</button>
+      <button class="filter-btn" onclick="setFilter('carre',this)">Carré</button>
+      <span class="count" id="gal-count"></span>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="section" id="tab-logs">
+    <div class="log-box">
+      <div class="log-head"><span>Journal d'activité</span><span id="log-count">0 entrées</span></div>
+      <div class="log-body" id="log-body"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="maybeClose(event)">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <img id="modal-img" src="" alt="">
+  <div class="modal-info" id="modal-info"></div>
+</div>
+
+<script>
+let S = { files: [], logs: [], status: {} };
+let currentTab    = 'gallery';
+let currentFilter = 'all';
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function setTab(t) {
+  currentTab = t;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.hdr-nav button').forEach(b => b.classList.remove('on'));
+  document.getElementById('tab-' + t).classList.add('active');
+  document.querySelector(`.hdr-nav button[onclick="setTab('${t}')"]`).classList.add('on');
+  render();
+}
+
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  renderGallery();
+}
+
+function tagOf(name) {
+  if (name.endsWith('-portrait.jpg')) return 'portrait';
+  if (name.endsWith('-carre.jpg'))    return 'carre';
+  return 'main';
+}
+
+function filteredFiles() {
+  if (currentFilter === 'all') return S.files;
+  return S.files.filter(f => tagOf(f.name) === currentFilter);
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  if (currentTab === 'gallery') renderGallery();
+  else renderLogs();
+}
+
+function renderGallery() {
+  const files = filteredFiles();
+  document.getElementById('gal-count').textContent = `${files.length} image${files.length !== 1 ? 's' : ''}`;
+  if (!files.length) {
+    document.getElementById('gallery').innerHTML =
+      '<div class="empty"><div class="ico">📷</div><p>Aucune image retouchée</p><p>Déposez des images dans le dossier RAW</p></div>';
+    return;
+  }
+  document.getElementById('gallery').innerHTML = files.map(f => {
+    const tag  = tagOf(f.name);
+    const cls  = tag === 'portrait' ? 'tag-portrait' : tag === 'carre' ? 'tag-carre' : 'tag-main';
+    const lbl  = tag === 'portrait' ? 'Portrait' : tag === 'carre' ? 'Carré' : 'Principal';
+    return `
+      <div class="img-card" onclick="openModal('${f.url}','${f.name}')">
+        <img src="${f.url}" alt="${f.name}" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="no-img" style="display:none">📷</div>
+        <div class="card-info">
+          <div class="card-name">${f.name}</div>
+          <span class="card-tag ${cls}">${lbl}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderLogs() {
+  const logs = S.logs;
+  document.getElementById('log-count').textContent = `${logs.length} entrées`;
+  document.getElementById('log-body').innerHTML = logs.length
+    ? logs.map(l => {
+        const ts  = new Date(l.ts).toLocaleString('fr-FR');
+        const sc  = 's-' + (l.status || 'info');
+        const msg = l.file ? `${l.file}${l.output ? ' → ' + l.output : ''}${l.error ? ' ✗ ' + l.error : ''}` : (l.message || '');
+        return `<div class="log-row"><span class="log-ts">${ts}</span><span class="log-s ${sc}">${(l.status||'info').toUpperCase()}</span><span>${msg}</span></div>`;
+      }).join('')
+    : '<div style="padding:24px;color:var(--muted);text-align:center">Aucun log</div>';
+}
+
+function updateStatus() {
+  const st  = S.status;
+  const dot = document.getElementById('dot');
+  const qs  = document.getElementById('q-status');
+  document.getElementById('chip-count').textContent = st.retouched || 0;
+  if (st.processing) {
+    dot.classList.add('active');
+    qs.textContent = 'Traitement…';
+  } else if (st.queued > 0) {
+    dot.classList.add('active');
+    qs.textContent = `${st.queued} en attente`;
+  } else {
+    dot.classList.remove('active');
+    qs.textContent = 'Inactif';
+  }
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(url, name) {
+  document.getElementById('modal-img').src  = url;
+  document.getElementById('modal-info').textContent = name;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modal-img').src = '';
+}
+function maybeClose(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── FETCH ─────────────────────────────────────────────────────────────────────
+async function fetchAll() {
+  try {
+    const [files, logs, status] = await Promise.all([
+      fetch('/api/files').then(r => r.json()),
+      fetch('/api/logs').then(r => r.json()),
+      fetch('/api/status').then(r => r.json()),
+    ]);
+    S = { files, logs, status };
+    render();
+    updateStatus();
+  } catch(e) { console.warn('fetch', e); }
+}
+
+fetchAll();
+setInterval(fetchAll, 4000);
+</script>
+</body>
+</html>

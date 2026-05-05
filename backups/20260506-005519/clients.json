@@ -1,0 +1,16 @@
+[
+  {
+    "id": "mo0log24kdr80",
+    "name": "santi",
+    "type": "restaurant",
+    "preset": "food",
+    "createdAt": "2026-04-15T22:06:38.669Z"
+  },
+  {
+    "id": "mo0lopbduwwgo",
+    "name": "teste 2",
+    "type": "restaurant",
+    "preset": "auto",
+    "createdAt": "2026-04-15T22:06:50.665Z"
+  }
+]

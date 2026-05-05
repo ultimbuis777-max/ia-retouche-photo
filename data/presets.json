@@ -1,0 +1,86 @@
+{
+  "social": {
+    "name": "Social / Lifestyle",
+    "style": "social",
+    "description": "Contraste marqué, couleurs vives, rendu Instagram haut de gamme",
+    "params": {
+      "brightness": 105,
+      "saturation": 128,
+      "hue": 100,
+      "contrast": 12,
+      "contrastOffset": 3,
+      "sharpness": 0.6,
+      "contrastStretch": "0.5%x0.5%"
+    }
+  },
+  "ecom": {
+    "name": "E-commerce",
+    "style": "ecom",
+    "description": "Couleurs fidèles, rendu propre et net, fond valorisé",
+    "params": {
+      "brightness": 102,
+      "saturation": 108,
+      "hue": 100,
+      "contrast": 8,
+      "contrastOffset": 2,
+      "sharpness": 0.8,
+      "contrastStretch": "0.3%x0.3%"
+    }
+  },
+  "restaurant": {
+    "name": "Restaurant / Food",
+    "style": "restaurant",
+    "description": "Chaud, appétissant, couleurs riches et profondes",
+    "params": {
+      "brightness": 104,
+      "saturation": 122,
+      "hue": 103,
+      "contrast": 10,
+      "contrastOffset": 3,
+      "sharpness": 0.7,
+      "contrastStretch": "0.4%x0.4%"
+    }
+  },
+  "immobilier": {
+    "name": "Immobilier",
+    "style": "immobilier",
+    "description": "Lumineux, propre, espaces clairement définis",
+    "params": {
+      "brightness": 110,
+      "saturation": 112,
+      "hue": 100,
+      "contrast": 10,
+      "contrastOffset": 5,
+      "sharpness": 0.5,
+      "contrastStretch": "0.5%x0.5%"
+    }
+  },
+  "food": {
+    "name": "Food / Gastronomie",
+    "style": "food",
+    "description": "Chaud et appétissant, couleurs riches, netteté optimisée pour plats et ingrédients",
+    "params": {
+      "brightness": 105,
+      "saturation": 115,
+      "hue": 100,
+      "contrast": 11,
+      "contrastOffset": 3,
+      "sharpness": 1.1,
+      "contrastStretch": "0.5%x0.5%"
+    }
+  },
+  "default": {
+    "name": "Défaut",
+    "style": "default",
+    "description": "Équilibré, polyvalent, adapté à tous contextes",
+    "params": {
+      "brightness": 103,
+      "saturation": 112,
+      "hue": 100,
+      "contrast": 10,
+      "contrastOffset": 3,
+      "sharpness": 0.5,
+      "contrastStretch": "0.5%x0.5%"
+    }
+  }
+}
