@@ -19,16 +19,24 @@ function parseFloat_(s, fallback) {
 
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
+function getLumaStats(imagePath) {
+  const raw = imRun([imagePath, '-colorspace', 'Gray', '-format', '%[fx:mean] %[fx:standard_deviation]', 'info:']);
+  if (!raw) return { brightness: 0.5, contrast: 0.15 };
+  const [meanRaw, stdRaw] = raw.split(/\s+/);
+  return {
+    brightness: clamp(parseFloat_(meanRaw, 0.5), 0, 1),
+    contrast:   clamp(parseFloat_(stdRaw, 0.15), 0, 1),
+  };
+}
+
 // Brightness: mean luminance in [0,1]. Ideal ~0.50
 function getBrightness(imagePath) {
-  const raw = imRun([imagePath, '-colorspace', 'Gray', '-format', '%[fx:mean]', 'info:']);
-  return clamp(parseFloat_(raw, 0.5), 0, 1);
+  return getLumaStats(imagePath).brightness;
 }
 
 // Contrast: std-dev of luminance in [0,1]. Flat ~0.05, rich ~0.15-0.25
 function getContrast(imagePath) {
-  const raw = imRun([imagePath, '-colorspace', 'Gray', '-format', '%[fx:standard_deviation]', 'info:']);
-  return clamp(parseFloat_(raw, 0.15), 0, 1);
+  return getLumaStats(imagePath).contrast;
 }
 
 // Saturation: mean of S channel in HSL [0,1]
@@ -70,8 +78,9 @@ function getSharpness(imagePath) {
  * @returns {{ brightness, contrast, saturation, temperature, sharpness }}
  */
 function analyze(imagePath) {
-  const brightness  = getBrightness(imagePath);
-  const contrast    = getContrast(imagePath);
+  const luma        = getLumaStats(imagePath);
+  const brightness  = luma.brightness;
+  const contrast    = luma.contrast;
   const saturation  = getSaturation(imagePath);
   const temperature = getTemperature(imagePath);
   const sharpness   = getSharpness(imagePath);

@@ -86,8 +86,28 @@ nav button.has-alert::after{content:attr(data-count);position:absolute;top:2px;r
 /* Section */
 main{max-width:1440px;margin:0 auto;padding:24px 20px}
 .section{display:none}.section.active{display:block}
-.section-title{font-size:18px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:10px;color:var(--text);letter-spacing:-.3px}
+  .section-title{font-size:18px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:10px;color:var(--text);letter-spacing:-.3px}
 .pill{background:var(--bg);color:var(--muted);padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500;border:1px solid var(--border)}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 18px}
+.subtabs button{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--shadow-xs)}
+.subtabs button:hover{color:var(--accent);border-color:var(--accent-border);background:var(--accent-bg)}
+.subtabs button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.bulk-bar{display:none;align-items:center;justify-content:space-between;gap:12px;background:#0f172a;color:#fff;border-radius:var(--r-md);padding:10px 12px;margin-bottom:14px;box-shadow:var(--shadow-md);position:sticky;top:64px;z-index:80}
+.bulk-bar.active{display:flex}
+.bulk-actions{display:flex;gap:6px;flex-wrap:wrap}
+.bulk-actions button,.card-actions button{background:#fff;border:1px solid var(--border);color:var(--text-sec);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer}
+.bulk-actions button:hover,.card-actions button:hover{color:var(--accent);border-color:var(--accent-border);background:var(--accent-bg)}
+.card-select{position:absolute;top:8px;left:8px;z-index:4;width:28px;height:28px;accent-color:var(--accent);background:#fff;border:2px solid #fff}
+.card-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.settings-section{border-top:1px solid var(--border-light);padding-top:18px;margin-top:18px}
+.ai-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:18px;align-items:start}
+.ai-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;box-shadow:var(--shadow-xs)}
+.ai-panel h3{font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:12px}
+.ai-field textarea{width:100%;min-height:118px;resize:vertical;border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font:inherit;font-size:13px;color:var(--text);outline:none}
+.ai-field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.ai-field select{width:100%;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 10px;color:var(--text)}
+.ai-message{font-size:12px;color:var(--success);font-weight:700;margin-top:10px;min-height:18px}
+@media(max-width:860px){.ai-layout{grid-template-columns:1fr}.bulk-bar{align-items:flex-start;flex-direction:column}}
 
 /* Section */
 .upload-zone{border:2px dashed var(--border);border-radius:var(--r-lg);padding:40px 24px;text-align:center;cursor:pointer;transition:all .25s ease;margin-bottom:20px;background:var(--surface);position:relative;box-shadow:var(--shadow-xs)}
@@ -122,6 +142,7 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 .status-item[onclick]{cursor:pointer}
 .status-label{font-size:12px;color:#64748b;font-weight:750;margin-bottom:4px}
 .status-value{font-size:28px;color:#0f172a;font-weight:850;line-height:1}
+.status-value{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .status-item.warn .status-value{color:var(--warning)}
 .status-item.info .status-value{color:var(--info)}
 .dashboard-focus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
@@ -133,7 +154,7 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 .focus-grid{display:grid;grid-template-columns:1fr;gap:12px}
 .focus-grid .img-card,.focus-grid .review-card{box-shadow:var(--shadow-xs)}
 @media(max-width:980px){.dashboard-focus{grid-template-columns:1fr}.status-strip{grid-template-columns:1fr 1fr 1fr}#tab-dashboard .upload-title{font-size:28px}}
-@media(max-width:620px){main{padding:18px 14px}.status-strip{grid-template-columns:1fr}#tab-dashboard .upload-zone{min-height:300px;padding:38px 18px}#tab-dashboard .upload-title{font-size:25px}.dashboard-focus{gap:24px}header{height:auto;min-height:56px;flex-wrap:wrap;padding:10px 14px}nav{order:3;width:100%;overflow-x:auto;padding-bottom:2px}.client-bar{border-left:0;padding-left:0}.hdr-right{margin-left:0}}
+@media(max-width:620px){main{padding:18px 14px}.status-strip{grid-template-columns:1fr}#tab-dashboard .upload-zone{min-height:300px;padding:38px 18px}#tab-dashboard .upload-title{font-size:25px}.dashboard-focus{gap:24px}header{height:auto;min-height:56px;flex-wrap:wrap;padding:10px 14px}nav{order:3;width:100%;min-width:0;flex:0 0 100%;display:flex;flex-wrap:wrap;gap:3px;overflow:visible;padding-bottom:2px}nav button{flex:1 1 45%;min-width:0;padding:7px 1px;font-size:9px;text-align:center;overflow:hidden;text-overflow:clip}.client-bar{border-left:0;padding-left:0}.hdr-right{margin-left:0}#tab-dashboard .upload-client-hint{max-width:100%;white-space:normal;text-align:center}}
 @media(max-width:560px){#tab-dashboard .upload-actions{flex-direction:column;align-items:center;width:100%}#tab-dashboard .upload-btn{width:100%;max-width:220px}}
 
 
@@ -175,6 +196,9 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 .toolbar label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;font-weight:500}
 .toolbar input[type=range]{width:90px;accent-color:var(--accent)}
 .toolbar select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:var(--r-sm);font-size:12px;outline:none;box-shadow:var(--shadow-xs)}
+.quick-select{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 16px}
+.quick-select button{background:#fff;border:1px solid var(--border);color:#475569;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:var(--shadow-xs)}
+.quick-select button:hover{background:var(--accent-bg);border-color:var(--accent-border);color:var(--accent)}
 
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
 @media(max-width:560px){.gallery{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
@@ -194,9 +218,10 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 /* Section */
 .split-before{
   position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
   clip-path:inset(0 calc(100% - var(--split, 50%)) 0 0);
-  backdrop-filter:grayscale(70%) brightness(.86) contrast(.82) saturate(.4);
-  -webkit-backdrop-filter:grayscale(70%) brightness(.86) contrast(.82) saturate(.4);
   opacity:0;
   transition:opacity .22s ease;
   pointer-events:none;
@@ -394,6 +419,8 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 .slider-group label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .slider-group label span{font-size:14px;font-weight:800;color:var(--accent);letter-spacing:0;text-transform:none}
 .slider-group input[type=range]{width:100%;accent-color:var(--accent)}
+.slider-group.studio{background:linear-gradient(180deg,#fff,#f8fafc);border-color:#e8edf4}
+.slider-group.studio label span{color:var(--violet)}
 
 .preset-test-area{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;margin-bottom:4px}
 .preset-test-zone{border:2px dashed var(--border);border-radius:var(--r-sm);padding:20px;text-align:center;cursor:pointer;transition:all .2s;font-size:12px;color:var(--muted);font-weight:500}
@@ -403,6 +430,9 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 .preview-col label{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;text-align:center}
 .preview-col img{width:100%;border-radius:var(--r-sm);border:1px solid var(--border);display:block}
 .preset-test-status{font-size:11px;margin-top:8px;min-height:16px;text-align:center;font-weight:500}
+.preset-live-note{font-size:11px;color:var(--muted);line-height:1.45;margin:-4px 0 10px}
+.preset-test-zone.drag-over{border-color:var(--violet);background:var(--violet-bg);color:var(--violet);box-shadow:0 0 0 4px rgba(124,58,237,.06)}
+.preview-col.after img{filter:brightness(var(--pv-bright,1)) saturate(var(--pv-sat,1)) contrast(var(--pv-contrast,1));box-shadow:0 0 var(--pv-glow,0) rgba(124,58,237,.28)}
 
 /* Section */
 .guide-body{overflow-y:auto;max-height:70vh;padding-right:4px}
@@ -450,6 +480,93 @@ main{max-width:1440px;margin:0 auto;padding:24px 20px}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 nav button:focus-visible{border-radius:var(--r-sm)}
 .btn:focus-visible,.btn-ghost:focus-visible,.btn-violet:focus-visible{outline-offset:3px}
+
+/* Safe UX polish */
+.img-card{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.88));border-color:rgba(226,232,240,.88);border-radius:14px;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;box-shadow:0 1px 2px rgba(15,23,42,.04),0 10px 24px rgba(15,23,42,.035)}
+.img-card:hover{transform:translateY(-3px);box-shadow:0 18px 34px rgba(15,23,42,.09),0 2px 7px rgba(15,23,42,.04);border-color:rgba(37,99,235,.28)}
+.img-card:active{transform:translateY(-1px);transition-duration:.08s}
+.card-img-wrap{background:#eef2f7}
+.card-img-wrap::after{content:"";position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(180deg,transparent,rgba(15,23,42,.18));opacity:0;transition:opacity .16s ease;pointer-events:none}
+.img-card:hover .card-img-wrap::after{opacity:1}
+.card-info{padding:12px}
+.card-name{font-size:12px;font-weight:750;color:#334155;letter-spacing:0;margin-bottom:9px}
+.card-meta{align-items:flex-start;margin-bottom:8px}
+.badge,.badge-preset,.badge-ctype,.badge-conf,.advanced-status{box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.card-score-row{background:#f8fafc;border:1px solid #e8edf4;border-radius:10px;padding:7px 8px;margin-top:7px;margin-bottom:6px}
+.score-num{font-size:12px}
+.score-bar{height:4px;background:#e2e8f0}
+.score-fill{transition:width .18s ease}
+.card-actions{opacity:.72;transition:opacity .16s ease,transform .16s ease;transform:translateY(1px)}
+.img-card:hover .card-actions{opacity:1;transform:translateY(0)}
+.bulk-bar{animation:bulkIn .16s ease both}
+@keyframes bulkIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.card-select{border-radius:8px;box-shadow:0 8px 18px rgba(15,23,42,.22),0 0 0 2px rgba(15,23,42,.18)}
+.split-before{opacity:0;transition:opacity .16s ease}
+.split-divider{width:1px;background:linear-gradient(180deg,rgba(255,255,255,.2),#fff,rgba(255,255,255,.2));box-shadow:0 0 0 1px rgba(15,23,42,.14),0 0 14px rgba(255,255,255,.65);transition:opacity .16s ease}
+.split-handle{width:34px;height:34px;border:1px solid rgba(226,232,240,.95);box-shadow:0 12px 26px rgba(15,23,42,.22),0 0 0 4px rgba(255,255,255,.42);transition:opacity .16s ease,transform .16s ease,box-shadow .16s ease;touch-action:none}
+.split-handle:hover{transform:translate(-50%,-50%) scale(1.05);box-shadow:0 14px 30px rgba(15,23,42,.28),0 0 0 5px rgba(255,255,255,.5)}
+.split-labels{padding:9px 10px;transition:opacity .16s ease}
+.split-labels span{background:rgba(15,23,42,.68);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);font-size:9px}
+.empty{margin:0;border:1px dashed #dbe3ee;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.42));padding:54px 20px}
+.empty-ico svg{filter:drop-shadow(0 10px 18px rgba(15,23,42,.06))}
+.dashboard-focus{gap:22px}
+.focus-section{padding-top:2px}
+.focus-head{margin-bottom:14px}
+.status-item{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.status-item[onclick]:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(15,23,42,.07);border-color:#d6e1ef}
+.ai-panel,.settings-wrap{border-radius:16px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 14px 30px rgba(15,23,42,.04)}
+.ai-panel h3{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ai-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.ai-state{background:#f8fafc;border:1px solid #e8edf4;border-radius:12px;padding:10px}
+.ai-state strong{display:block;font-size:16px;color:#0f172a;line-height:1}
+.ai-state span{display:block;margin-top:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.ai-examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ai-examples button{background:#f8fafc;border:1px solid #e2e8f0;color:#475569;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:750;cursor:pointer;transition:all .16s ease}
+.ai-examples button:hover{background:var(--accent-bg);border-color:var(--accent-border);color:var(--accent)}
+.ai-safe-note{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--success-bg);border:1px solid var(--success-border);color:var(--success);font-size:12px;font-weight:750;line-height:1.4}
+.ai-hybrid-note{margin-bottom:14px;padding:12px 14px;border-radius:14px;background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #e8edf4;color:#334155;font-size:12px;line-height:1.55}
+.ai-hybrid-note strong{display:block;color:#0f172a;font-size:13px;margin-bottom:3px}
+.ai-drop-zone{border:1.5px dashed #cbd5e1;border-radius:14px;padding:14px;margin-bottom:14px;background:#f8fafc;color:#475569;font-size:12px;font-weight:700;text-align:center;transition:all .16s ease}
+.ai-drop-zone.drag-over{border-color:var(--violet);background:var(--violet-bg);color:var(--violet);box-shadow:0 0 0 4px rgba(124,58,237,.06)}
+.ai-quick-types{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ai-quick-types button{background:#fff;border:1px solid #e2e8f0;color:#475569;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer;transition:all .16s ease}
+.ai-quick-types button:hover{background:var(--violet-bg);border-color:var(--violet-border);color:var(--violet)}
+.ai-thumb-strip{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.ai-thumb{width:58px;flex:0 0 auto}
+.ai-thumb img{width:58px;height:44px;object-fit:cover;border-radius:10px;border:1px solid #e2e8f0;display:block}
+.ai-thumb span{display:block;margin-top:3px;font-size:9px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.advanced-status.st-pending{background:var(--warning-bg);color:var(--warning);border-color:var(--warning-border)}
+.advanced-status.st-ready{background:var(--success-bg);color:var(--success);border-color:var(--success-border)}
+.advanced-status.st-ai_requested{background:var(--violet-bg);color:var(--violet);border-color:var(--violet-border)}
+.advanced-status.st-done{background:var(--accent-bg);color:var(--accent);border-color:var(--accent-border)}
+.advanced-status.st-cancelled{background:var(--bg);color:var(--muted);border-color:var(--border)}
+.score-help{display:grid;grid-template-columns:minmax(180px,.8fr) minmax(260px,1.2fr);gap:10px;margin:-6px 0 16px}
+.score-help-card{background:rgba(255,255,255,.78);border:1px solid #e8edf4;border-radius:14px;padding:12px;box-shadow:var(--shadow-xs)}
+.score-help-title{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.6px;color:#475569;margin-bottom:8px}
+.score-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.score-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:8px;text-align:center}
+.score-metric strong{display:block;font-size:18px;color:#0f172a;line-height:1}
+.score-metric span{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.score-ranges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.score-range{border-radius:10px;padding:8px;font-size:10px;font-weight:800;text-align:center;border:1px solid}
+.score-range strong{display:block;font-size:12px;margin-bottom:2px}
+.score-range.ex{background:var(--success-bg);color:var(--success);border-color:var(--success-border)}
+.score-range.vg{background:var(--accent-bg);color:var(--accent);border-color:var(--accent-border)}
+.score-range.ok{background:var(--warning-bg);color:var(--warning);border-color:var(--warning-border)}
+.score-range.low{background:var(--error-bg);color:var(--error);border-color:var(--error-border)}
+.score-tooltip{position:relative}
+.score-tooltip:hover::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 8px);width:230px;background:#0f172a;color:#fff;border-radius:10px;padding:9px 10px;font-size:11px;line-height:1.4;font-weight:650;box-shadow:0 16px 34px rgba(15,23,42,.22);z-index:20}
+.img-card.is-selected{border-color:rgba(37,99,235,.45);box-shadow:0 0 0 3px rgba(37,99,235,.08),0 18px 34px rgba(15,23,42,.09)}
+.settings-section{padding:18px;border:1px solid #edf1f6;border-radius:14px;background:rgba(255,255,255,.58)}
+.settings-section h3,.settings-wrap>h3{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#334155;margin-bottom:12px}
+.system-details{border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden}
+.system-details summary{cursor:pointer;list-style:none;padding:12px 14px;font-size:12px;font-weight:800;color:#475569}
+.system-details summary::-webkit-details-marker{display:none}
+.system-details[open] summary{border-bottom:1px solid var(--border-light)}
+.toast{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:14px;box-shadow:0 18px 38px rgba(15,23,42,.14);animation-duration:.18s}
+@media(hover:none){.split-before,.split-divider,.split-handle,.split-labels{opacity:1}.card-actions{opacity:1}.img-card:hover{transform:none}}
+@media(max-width:720px){.score-help{grid-template-columns:1fr}.score-ranges{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.toast-container{left:14px;right:14px;bottom:14px}.toast{max-width:none}.ai-summary{grid-template-columns:1fr}.card-actions button{flex:1}.img-card{border-radius:12px}.bulk-bar{top:112px}.quick-select button{flex:1 1 44%}nav button:nth-child(5){font-size:0}nav button:nth-child(5)::after{content:"Params";font-size:9px}}
 </style>
 </head>
 <body>
@@ -461,13 +578,8 @@ nav button:focus-visible{border-radius:var(--r-sm)}
   <nav>
     <button class="active" onclick="setTab('dashboard')">Dashboard</button>
     <button onclick="setTab('gallery')">Galerie</button>
-    <button onclick="setTab('exports')">Exports</button>
-    <button onclick="setTab('selected')">Sélectionnées</button>
-    <button onclick="setTab('review')" id="nav-review">À vérifier</button>
-    <button onclick="setTab('advanced')" id="nav-advanced">Retouche avancée</button>
     <button onclick="setTab('clients')">Clients</button>
-    <button onclick="setTab('logs')">Logs</button>
-    <button onclick="setTab('api')">API & crédits</button>
+    <button onclick="setTab('advanced')" id="nav-advanced">Retouche IA</button>
     <button onclick="setTab('settings')">Paramètres</button>
   </nav>
   <div class="client-bar">
@@ -522,13 +634,35 @@ nav button:focus-visible{border-radius:var(--r-sm)}
     <div class="dashboard-focus">
       <section class="focus-section"><div class="focus-head"><h2 class="focus-title">Prêtes</h2><button class="focus-link" onclick="setTab('selected')">Tout voir</button></div><div class="focus-grid" id="dash-ready-grid"></div></section>
       <section class="focus-section"><div class="focus-head"><h2 class="focus-title">À vérifier</h2><button class="focus-link" onclick="setTab('review')">Tout voir</button></div><div class="focus-grid" id="dash-review-grid"></div></section>
-      <section class="focus-section"><div class="focus-head"><h2 class="focus-title">Retouche avancée</h2><button class="focus-link" onclick="setTab('advanced')">Tout voir</button></div><div class="focus-grid" id="dash-advanced-grid"></div></section>
+      <section class="focus-section"><div class="focus-head"><h2 class="focus-title">Retouche IA</h2><button class="focus-link" onclick="setTab('advanced')">Tout voir</button></div><div class="focus-grid" id="dash-advanced-grid"></div></section>
     </div>
   </div>
 
   <!-- GALLERY -->
   <div class="section" id="tab-gallery">
     <div class="section-title">Galerie <span class="pill" id="gal-count">0</span></div>
+    <div class="subtabs">
+      <button class="active" onclick="setTab('gallery')">Toutes</button>
+      <button onclick="setTab('selected')">Sélectionnées</button>
+      <button onclick="setTab('exports')">Exports</button>
+      <button onclick="setTab('review')" id="nav-review">À vérifier</button>
+    </div>
+    <div class="bulk-bar" id="bulk-bar">
+      <strong><span id="bulk-count">0</span> sélectionnée(s)</strong>
+      <div class="bulk-actions">
+        <button onclick="bulkExport()">Exporter</button>
+        <button onclick="bulkQueueAi()">Envoyer en Retouche IA</button>
+        <button onclick="bulkMarkSelected()">Marquer comme sélectionnée</button>
+        <button onclick="clearSelection()">Désélectionner tout</button>
+      </div>
+    </div>
+    <div class="quick-select">
+      <button onclick="selectVisible()">Tout sélectionner visible</button>
+      <button onclick="selectLastBatch()">Sélectionner dernier lot</button>
+      <button onclick="selectScoreAbove(75)">Sélectionner score &gt; 75</button>
+      <button onclick="selectType('food')">Sélectionner food</button>
+      <button onclick="clearSelection()">Désélectionner tout</button>
+    </div>
     <div class="toolbar">
       <label>Score min :
         <input type="range" id="f-score" min="0" max="100" value="0"
@@ -536,14 +670,43 @@ nav button:focus-visible{border-radius:var(--r-sm)}
         <span id="f-score-v">0</span>
       </label>
       <select id="f-sort" onchange="renderGallery()">
-        <option value="sd">Score ↓</option>
-        <option value="sa">Score ↑</option>
-        <option value="dd">Date ↓</option>
-        <option value="da">Date ↑</option>
+        <option value="dd">Plus récentes</option>
+        <option value="da">Plus anciennes</option>
+        <option value="sd">Score élevé</option>
+        <option value="sa">Score faible</option>
+        <option value="batch">Dernier lot</option>
       </select>
       <select id="f-preset" onchange="renderGallery()">
         <option value="">Tous les presets</option>
       </select>
+      <select id="f-client" onchange="renderGallery()">
+        <option value="">Tous les clients</option>
+      </select>
+      <select id="f-type" onchange="renderGallery()">
+        <option value="">Tous les types</option>
+        <option value="food">Food</option>
+        <option value="portrait">Portrait</option>
+        <option value="interior">Interior</option>
+      </select>
+    </div>
+    <div class="score-help">
+      <div class="score-help-card">
+        <div class="score-help-title">Lecture du score</div>
+        <div class="score-metrics">
+          <div class="score-metric"><strong>N</strong><span>Netteté</span></div>
+          <div class="score-metric"><strong>L</strong><span>Lumière</span></div>
+          <div class="score-metric"><strong>C</strong><span>Couleurs</span></div>
+        </div>
+      </div>
+      <div class="score-help-card">
+        <div class="score-help-title">Niveaux qualité</div>
+        <div class="score-ranges">
+          <div class="score-range ex"><strong>90–100</strong>Excellent</div>
+          <div class="score-range vg"><strong>75–89</strong>Très bon</div>
+          <div class="score-range ok"><strong>60–74</strong>Correct</div>
+          <div class="score-range low"><strong>&lt;60</strong>À vérifier</div>
+        </div>
+      </div>
     </div>
     <div class="gallery" id="gal-grid"></div>
   </div>
@@ -551,6 +714,12 @@ nav button:focus-visible{border-radius:var(--r-sm)}
   <!-- EXPORTS -->
   <div class="section" id="tab-exports">
     <div class="section-title">Exports</div>
+    <div class="subtabs">
+      <button onclick="setTab('gallery')">Toutes</button>
+      <button onclick="setTab('selected')">Sélectionnées</button>
+      <button class="active" onclick="setTab('exports')">Exports</button>
+      <button onclick="setTab('review')">À vérifier</button>
+    </div>
     <div class="export-cols">
       <div>
         <div class="export-head">Portrait <span class="pill">1080 × 1350</span></div>
@@ -566,19 +735,78 @@ nav button:focus-visible{border-radius:var(--r-sm)}
   <!-- SELECTED -->
   <div class="section" id="tab-selected">
     <div class="section-title">Meilleures images <span class="pill" id="sel-count">0</span></div>
+    <div class="subtabs">
+      <button onclick="setTab('gallery')">Toutes</button>
+      <button class="active" onclick="setTab('selected')">Sélectionnées</button>
+      <button onclick="setTab('exports')">Exports</button>
+      <button onclick="setTab('review')">À vérifier</button>
+    </div>
     <div class="gallery" id="sel-grid"></div>
   </div>
 
   <!-- REVIEW -->
   <div class="section" id="tab-review">
     <div class="section-title">À vérifier <span class="pill" id="review-count">0</span></div>
+    <div class="subtabs">
+      <button onclick="setTab('gallery')">Toutes</button>
+      <button onclick="setTab('selected')">Sélectionnées</button>
+      <button onclick="setTab('exports')">Exports</button>
+      <button class="active" onclick="setTab('review')">À vérifier</button>
+    </div>
     <div class="review-grid" id="review-grid"></div>
   </div>
 
   <!-- ADVANCED RETOUCH -->
   <div class="section" id="tab-advanced">
-    <div class="section-title">Retouche avancée <span class="pill" id="advanced-count">0</span></div>
-    <div class="review-grid" id="advanced-grid"></div>
+    <div class="section-title">Retouche IA <span class="pill" id="advanced-count">0</span></div>
+    <div class="ai-layout">
+      <div class="ai-panel">
+        <h3>Photos en attente <span class="pill" id="ai-pending-count">0</span></h3>
+        <div class="ai-hybrid-note"><strong>Studio hybride</strong>Le pipeline local traite automatiquement 80–90% des images gratuitement. La Retouche IA sert uniquement aux corrections complexes ou artistiques.</div>
+        <div class="ai-drop-zone" id="ai-drop-zone"
+          ondragenter="onAiDragEnter(event)" ondragover="onAiDragOver(event)"
+          ondragleave="onAiDragLeave(event)" ondrop="onAiDrop(event)">
+          Glisse ici une photo depuis la galerie pour l'ajouter en Retouche IA
+        </div>
+        <div class="ai-summary">
+          <div class="ai-state"><strong id="ai-state-pending">0</strong><span>Pending</span></div>
+          <div class="ai-state"><strong id="ai-state-ready">0</strong><span>Ready</span></div>
+          <div class="ai-state"><strong id="ai-state-requested">0</strong><span>AI requested</span></div>
+          <div class="ai-state"><strong id="ai-state-done">0</strong><span>Done</span></div>
+        </div>
+        <div class="ai-thumb-strip" id="ai-thumb-strip"></div>
+        <div class="review-grid" id="advanced-grid"></div>
+      </div>
+      <div class="ai-panel">
+        <h3>Instruction globale</h3>
+        <div class="ai-field">
+          <textarea id="ai-instruction" placeholder="Ex : enlever une brûlure sur la pizza, supprimer un objet gênant, corriger un reflet…"></textarea>
+          <div class="ai-examples">
+            <button type="button" onclick="useAiExample('Enlever une brûlure sur la pizza et garder un rendu naturel.')">Brûlure</button>
+            <button type="button" onclick="useAiExample('Supprimer un objet gênant sans modifier le cadrage.')">Objet gênant</button>
+            <button type="button" onclick="useAiExample('Corriger un reflet tout en conservant les couleurs réelles.')">Reflet</button>
+          </div>
+          <div class="ai-quick-types">
+            <button type="button" onclick="useAiExample('Supprimer un objet gênant sans modifier le cadrage ni les couleurs.')">Supprimer objet</button>
+            <button type="button" onclick="useAiExample('Corriger une brûlure ou une zone abîmée en gardant un rendu naturel.')">Corriger brûlure</button>
+            <button type="button" onclick="useAiExample('Nettoyer un reflet gênant tout en conservant la matière réelle.')">Nettoyer reflet</button>
+            <button type="button" onclick="useAiExample('Corriger la lumière et équilibrer les tons sans effet artificiel.')">Corriger lumière</button>
+            <button type="button" onclick="useAiExample('Rendre l’image plus premium, propre et professionnelle, sans changer le sujet.')">Rendre plus premium</button>
+            <button type="button" onclick="useAiExample('Détourer le sujet proprement et préparer un fond neutre.')">Détourer sujet</button>
+          </div>
+          <select id="ai-provider">
+            <option value="openai">OpenAI</option>
+            <option value="replicate">Replicate</option>
+            <option value="stability">Stability</option>
+            <option value="photoroom">Photoroom</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <button class="btn-violet" style="margin-top:12px" onclick="prepareAiRetouch()">Préparer la retouche</button>
+        <div class="ai-safe-note">Aucune API n'est appelée automatiquement.</div>
+        <div class="ai-message" id="ai-message"></div>
+      </div>
+    </div>
   </div>
 
   <!-- CLIENTS -->
@@ -590,29 +818,11 @@ nav button:focus-visible{border-radius:var(--r-sm)}
     <div class="clients-grid" id="clients-grid"></div>
   </div>
 
-  <!-- LOGS -->
-  <div class="section" id="tab-logs">
-    <div class="section-title">Logs</div>
-    <div class="log-box">
-      <div class="log-head"><span>200 dernières entrées</span><span id="log-count">0 entrées</span></div>
-      <div class="log-list" id="log-list"></div>
-    </div>
-  </div>
-
-  <!-- API KEYS -->
-  <div class="section" id="tab-api">
-    <div class="section-title">API & crédits</div>
-    <div class="settings-wrap settings-wide">
-      <div class="settings-note">Les clés API sont optionnelles. Le traitement local reste gratuit. Rien n'est envoyé automatiquement.</div>
-      <div id="api-alert"></div>
-      <div class="key-grid" id="api-key-grid"></div>
-    </div>
-  </div>
-
   <!-- SETTINGS -->
   <div class="section" id="tab-settings">
     <div class="section-title">Paramètres</div>
-    <div class="settings-wrap">
+    <div class="settings-wrap settings-wide">
+      <h3>Général</h3>
       <div id="set-alert"></div>
       <div class="field">
         <label>Seuil sélection auto (score min → /selected)</label>
@@ -640,6 +850,29 @@ nav button:focus-visible{border-radius:var(--r-sm)}
         </div>
       </div>
       <button class="btn" onclick="saveSettings()">Enregistrer</button>
+
+      <div class="settings-section">
+        <h3>IA avancée</h3>
+        <div class="settings-note">Le traitement local reste gratuit. Les API servent uniquement aux retouches avancées manuelles.</div>
+        <div id="api-alert"></div>
+        <div class="key-grid" id="api-key-grid"></div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Qualité</h3>
+        <div class="settings-note">L'upscale reste optionnel et les retouches IA ne sont jamais lancées automatiquement.</div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Système</h3>
+        <details class="system-details">
+          <summary>Voir les logs techniques</summary>
+          <div class="log-box">
+            <div class="log-head"><span>200 dernières entrées</span><span id="log-count">0 entrées</span></div>
+            <div class="log-list" id="log-list"></div>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
 
@@ -716,23 +949,57 @@ nav button:focus-visible{border-radius:var(--r-sm)}
         <label>Netteté <span id="ps-sharpness-v">0.5</span></label>
         <input type="range" id="ps-sharpness" min="1" max="20" value="5" oninput="presetEditorUpdate()">
       </div>
+      <div class="slider-group studio">
+        <label>Flou arrière-plan <span id="ps-bg-blur-v">0</span></label>
+        <input type="range" id="ps-bg-blur" min="0" max="100" value="0" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Focus sujet <span id="ps-subject-focus-v">50</span></label>
+        <input type="range" id="ps-subject-focus" min="0" max="100" value="50" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Profondeur studio <span id="ps-depth-v">35</span></label>
+        <input type="range" id="ps-depth" min="0" max="100" value="35" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Chaleur lumière <span id="ps-warmth-v">50</span></label>
+        <input type="range" id="ps-warmth" min="0" max="100" value="50" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Intensité couleurs <span id="ps-color-intensity-v">50</span></label>
+        <input type="range" id="ps-color-intensity" min="0" max="100" value="50" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Texture / détail <span id="ps-texture-v">40</span></label>
+        <input type="range" id="ps-texture" min="0" max="100" value="40" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Glow léger <span id="ps-glow-v">0</span></label>
+        <input type="range" id="ps-glow" min="0" max="100" value="0" oninput="presetEditorUpdate()">
+      </div>
+      <div class="slider-group studio">
+        <label>Contraste cinématique <span id="ps-cine-contrast-v">25</span></label>
+        <input type="range" id="ps-cine-contrast" min="0" max="100" value="25" oninput="presetEditorUpdate()">
+      </div>
     </div>
     <div class="preset-test-area">
       <div class="preset-test-zone" id="preset-test-zone"
-        onclick="document.getElementById('preset-test-input').click()">
+        onclick="document.getElementById('preset-test-input').click()"
+        ondragenter="onPresetDragEnter(event)" ondragover="onPresetDragOver(event)"
+        ondragleave="onPresetDragLeave(event)" ondrop="onPresetDrop(event)">
         <input type="file" id="preset-test-input" accept="image/jpeg,image/png"
           style="display:none" onchange="testCustomPreset(this.files[0])">
-        Tester sur une image — cliquez pour choisir
+        Tester sur une image — cliquez ou glissez une photo
       </div>
+      <div class="preset-live-note">Aperçu live automatique après sélection d'une image. Les réglages studio restent légers et non destructifs.</div>
       <div class="preview-cols" id="preview-cols" style="display:none">
         <div class="preview-col"><label>Avant</label><img id="preview-before" src="" alt="avant"></div>
-        <div class="preview-col"><label>Après</label><img id="preview-after"  src="" alt="après"></div>
+        <div class="preview-col after"><label>Après</label><img id="preview-after"  src="" alt="après"></div>
       </div>
       <div class="preset-test-status" id="preset-test-status"></div>
     </div>
     <div class="form-actions">
       <button class="btn-ghost" onclick="closePresetEditor()">Annuler</button>
-      <button class="btn-violet" onclick="retestCustomPreset()">Actualiser aperçu</button>
       <button class="btn" onclick="saveCustomPreset()">Enregistrer le preset</button>
     </div>
   </div>
@@ -759,11 +1026,11 @@ nav button:focus-visible{border-radius:var(--r-sm)}
       <div class="guide-section">
         <h3>Signification du score</h3>
         <div class="score-legend">
-          <div class="score-leg-item hi"><div class="range">&gt; 70</div><div class="label">Excellent</div></div>
-          <div class="score-leg-item md"><div class="range">50 – 70</div><div class="label">Correct</div></div>
-          <div class="score-leg-item lo"><div class="range">&lt; 50</div><div class="label">Faible</div></div>
+          <div class="score-leg-item hi"><div class="range">90–100</div><div class="label">Excellent</div></div>
+          <div class="score-leg-item md"><div class="range">75–89</div><div class="label">Très bon</div></div>
+          <div class="score-leg-item lo"><div class="range">&lt; 60</div><div class="label">À vérifier</div></div>
         </div>
-        <p style="font-size:12px;color:var(--muted);margin-top:10px">Score = netteté (50%) + contraste (30%) + luminosité (20%). Image rejetée en dessous de 45 → archivée dans <em>failed</em>.</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:10px">N = Netteté, L = Lumière, C = Couleurs. Le score aide à décider quoi publier, vérifier ou envoyer en retouche ciblée.</p>
       </div>
       <div class="guide-section">
         <h3>Zone « À vérifier »</h3>
@@ -777,11 +1044,11 @@ nav button:focus-visible{border-radius:var(--r-sm)}
       </div>
       <div class="guide-section">
         <h3>Hover avant / après sur les images</h3>
-        <p style="font-size:13px;color:var(--text-sec);line-height:1.6">Survolez une image dans la galerie pour voir un split <em>avant / après</em> retouche. La moitié gauche simule l'état original (désaturé, contrasté), la droite montre l'image traitée.</p>
+        <p style="font-size:13px;color:var(--text-sec);line-height:1.6">Survolez une image dans la galerie pour voir un split <em>avant / après</em> retouche. La moitié gauche affiche l'original réel, la droite montre l'image traitée.</p>
       </div>
       <div class="guide-section">
-        <h3>Retouche avancée</h3>
-        <p style="font-size:13px;color:var(--text-sec);line-height:1.6">Le traitement local reste gratuit par défaut. La retouche IA avancée est optionnelle, utilise vos clés API personnelles si elle est activée plus tard, et rien n'est envoyé sans action explicite.</p>
+        <h3>Retouche IA</h3>
+        <p style="font-size:13px;color:var(--text-sec);line-height:1.6">Le traitement local reste gratuit par défaut. Les API servent uniquement aux retouches avancées manuelles, et rien n'est envoyé sans action explicite.</p>
       </div>
     </div>
     <div class="form-actions">
@@ -800,6 +1067,8 @@ const S = {
   review: [], advanced: [], apiKeys: [],
 };
 let tab = 'dashboard';
+const selectedImages = new Set();
+let lastGalleryFiles = [];
 
 const PRESET_COLORS = {
   food:'#ea580c', social:'#2563eb', ecom:'#059669',
@@ -843,29 +1112,67 @@ const _shownCards = new Set();
 // Section
 const _split = { positions: new Map(), dragging: null };
 
+function _splitWrapData(wrap) {
+  const img = wrap && wrap.querySelector('.img-main');
+  return { wrap, url: img ? img.src : null };
+}
+
+function _splitStart(wrap) {
+  if (!wrap) return;
+  _split.dragging = _splitWrapData(wrap);
+  document.body.style.userSelect = 'none';
+  document.body.style.cursor = 'ew-resize';
+}
+
+function _splitMove(clientX) {
+  if (!_split.dragging) return;
+  const { wrap, url } = _split.dragging;
+  const rect = wrap.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+  wrap.style.setProperty('--split', pct + '%');
+  if (url) _split.positions.set(url, pct);
+}
+
+function _splitEnd() {
+  if (!_split.dragging) return;
+  _split.dragging = null;
+  document.body.style.userSelect = '';
+  document.body.style.cursor = '';
+}
+
 document.addEventListener('mousedown', e => {
   const handle = e.target.closest('.split-handle');
   if (!handle) return;
   e.preventDefault();
-  const wrap = handle.closest('.card-img-wrap');
-  const img  = wrap && wrap.querySelector('.img-main');
-  _split.dragging = { wrap, url: img ? img.src : null };
-  document.body.style.userSelect = 'none';
-  document.body.style.cursor     = 'ew-resize';
+  _splitStart(handle.closest('.card-img-wrap'));
 });
 document.addEventListener('mousemove', e => {
-  if (!_split.dragging) return;
-  const { wrap, url } = _split.dragging;
-  const rect = wrap.getBoundingClientRect();
-  const pct  = Math.max(5, Math.min(95, ((e.clientX - rect.left) / rect.width) * 100));
-  wrap.style.setProperty('--split', pct + '%');
-  if (url) _split.positions.set(url, pct);
+  _splitMove(e.clientX);
 });
-document.addEventListener('mouseup', () => {
-  if (!_split.dragging) return;
-  _split.dragging = null;
-  document.body.style.userSelect = '';
-  document.body.style.cursor     = '';
+document.addEventListener('mouseup', _splitEnd);
+document.addEventListener('touchstart', e => {
+  const handle = e.target.closest('.split-handle');
+  if (!handle) return;
+  e.preventDefault();
+  _splitStart(handle.closest('.card-img-wrap'));
+}, { passive:false });
+document.addEventListener('touchmove', e => {
+  if (!_split.dragging || !e.touches.length) return;
+  e.preventDefault();
+  _splitMove(e.touches[0].clientX);
+}, { passive:false });
+document.addEventListener('touchend', _splitEnd);
+document.addEventListener('dblclick', e => {
+  const wrap = e.target.closest('.card-img-wrap');
+  if (!wrap || !wrap.querySelector('.split-before')) return;
+  e.preventDefault();
+  e.stopPropagation();
+  if (_cardOpenTimer) { clearTimeout(_cardOpenTimer); _cardOpenTimer = null; }
+  const { url } = _splitWrapData(wrap);
+  const current = parseFloat(wrap.style.getPropertyValue('--split')) || 50;
+  const next = current >= 99 ? 0 : 100;
+  wrap.style.setProperty('--split', next + '%');
+  if (url) _split.positions.set(url, next);
 });
 
 // Section
@@ -880,6 +1187,16 @@ function _imgErr(el) {
   const sl = wrap.querySelector('.split-labels');
   if (sb) sb.style.display = 'none';
   if (sl) sl.style.display = 'none';
+}
+
+let _cardOpenTimer = null;
+function cardOpen(e, url) {
+  if (e && e.defaultPrevented) return;
+  if (_cardOpenTimer) clearTimeout(_cardOpenTimer);
+  _cardOpenTimer = setTimeout(() => {
+    _cardOpenTimer = null;
+    openModal(url);
+  }, 170);
 }
 
 // Section
@@ -923,20 +1240,23 @@ function checkNewLogs(logs) {
 // Section
 function setTab(t) {
   tab = t;
+  const parent = ['exports', 'selected', 'review'].includes(t) ? 'gallery' : t;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + t).classList.add('active');
-  document.querySelector(`nav button[onclick="setTab('${t}')"]`).classList.add('active');
+  const navBtn = document.querySelector(`nav button[onclick="setTab('${parent}')"]`);
+  if (navBtn) navBtn.classList.add('active');
   render();
 }
 
 // Section
-function color(s) { return s >= 70 ? 'var(--success)' : s >= 50 ? 'var(--warning)' : 'var(--error)'; }
+function color(s) { return s >= 90 ? 'var(--success)' : s >= 75 ? 'var(--accent)' : s >= 60 ? 'var(--warning)' : 'var(--error)'; }
 
 function qualityBadge(s) {
-  if (s >= 70) return `<span class="badge b-hi">Excellent</span>`;
-  if (s >= 50) return `<span class="badge b-md">Correct</span>`;
-  return `<span class="badge b-lo">Faible</span>`;
+  if (s >= 90) return `<span class="badge b-hi">Excellent</span>`;
+  if (s >= 75) return `<span class="badge b-hi">Très bon</span>`;
+  if (s >= 60) return `<span class="badge b-md">Correct</span>`;
+  return `<span class="badge b-lo">À vérifier</span>`;
 }
 
 function presetBadge(pKey, pName) {
@@ -989,10 +1309,40 @@ function buildHistoryMap() {
   return map;
 }
 
+function rawImageUrl(name) {
+  return name ? `/raw/${encodeURIComponent(name)}` : '';
+}
+
+function faitName(name) {
+  if (!name) return '';
+  const i = name.lastIndexOf('.');
+  if (i <= 0) return `${name}_FAIT`;
+  return `${name.slice(0, i)}_FAIT${name.slice(i)}`;
+}
+
+function beforeImg(originalName) {
+  const src = rawImageUrl(originalName);
+  if (!src) return '<div class="split-before"></div>';
+  const fallback = rawImageUrl(faitName(originalName));
+  return `<img class="split-before" src="${src}" data-fallback="${fallback}" alt="" loading="lazy" onerror="_beforeErr(this)">`;
+}
+
+function _beforeErr(img) {
+  const fallback = img.dataset.fallback || '';
+  if (fallback) {
+    img.dataset.fallback = '';
+    img.src = fallback;
+    return;
+  }
+  img.style.display = 'none';
+}
+
 function getClientIdForOutput(outputName, hmap) {
   const h = hmap[outputName];
   if (!h || !h.original) return null;
-  return S.clientUploads[h.original] || null;
+  const uploadMeta = S.clientUploads[h.original] || null;
+  if (uploadMeta && typeof uploadMeta === 'object') return uploadMeta.clientId || null;
+  return uploadMeta || null;
 }
 
 // Section
@@ -1001,6 +1351,12 @@ function populateClientSelector() {
   const cur = S.activeClientId || '';
   sel.innerHTML = '<option value="">Tous</option>' +
     S.clients.map(c => `<option value="${c.id}"${c.id === cur ? ' selected' : ''}>${c.name}</option>`).join('');
+  const galSel = document.getElementById('f-client');
+  if (galSel) {
+    const galCur = galSel.value;
+    galSel.innerHTML = '<option value="">Tous les clients</option>' +
+      S.clients.map(c => `<option value="${c.id}"${c.id === galCur ? ' selected' : ''}>${c.name}</option>`).join('');
+  }
   updateUploadClientHint();
 }
 
@@ -1091,6 +1447,20 @@ async function quickPreset(value) {
 // Section
 let _presetEditorClientId = null;
 let _presetTestFile       = null;
+let _presetPreviewTimer   = null;
+let _presetPreviewRunning = false;
+let _presetPreviewQueued  = false;
+
+const STUDIO_PRESET_FIELDS = [
+  ['bgBlur', 'ps-bg-blur', 0],
+  ['subjectFocus', 'ps-subject-focus', 50],
+  ['depth', 'ps-depth', 35],
+  ['warmth', 'ps-warmth', 50],
+  ['colorIntensity', 'ps-color-intensity', 50],
+  ['texture', 'ps-texture', 40],
+  ['glow', 'ps-glow', 0],
+  ['cineContrast', 'ps-cine-contrast', 25],
+];
 
 function openPresetEditor(clientId) {
   _presetEditorClientId = clientId;
@@ -1103,6 +1473,11 @@ function openPresetEditor(clientId) {
   document.getElementById('ps-saturation').value = p.saturation  || 112;
   document.getElementById('ps-contrast').value   = p.contrast    || 10;
   document.getElementById('ps-sharpness').value  = Math.round((p.sharpness || 0.5) * 10);
+  const studio = p.studio || {};
+  for (const [key, id, fallback] of STUDIO_PRESET_FIELDS) {
+    const el = document.getElementById(id);
+    if (el) el.value = studio[key] ?? p[key] ?? fallback;
+  }
   presetEditorUpdate();
   document.getElementById('preview-cols').style.display   = 'none';
   document.getElementById('preset-test-status').textContent = '';
@@ -1111,6 +1486,7 @@ function openPresetEditor(clientId) {
 }
 function closePresetEditor(e) {
   if (e && e.target !== document.getElementById('preset-editor-modal')) return;
+  clearTimeout(_presetPreviewTimer);
   document.getElementById('preset-editor-modal').classList.remove('open');
 }
 function presetEditorUpdate() {
@@ -1118,18 +1494,52 @@ function presetEditorUpdate() {
   document.getElementById('ps-saturation-v').textContent = document.getElementById('ps-saturation').value;
   document.getElementById('ps-contrast-v').textContent   = document.getElementById('ps-contrast').value;
   document.getElementById('ps-sharpness-v').textContent  = (parseInt(document.getElementById('ps-sharpness').value) / 10).toFixed(1);
+  for (const [, id] of STUDIO_PRESET_FIELDS) {
+    const el = document.getElementById(id);
+    const label = document.getElementById(id + '-v');
+    if (el && label) label.textContent = el.value;
+  }
+  applyPresetPreviewStyle();
+  schedulePresetPreview();
 }
 function getPresetEditorParams() {
+  const studio = {};
+  for (const [key, id, fallback] of STUDIO_PRESET_FIELDS) {
+    const el = document.getElementById(id);
+    studio[key] = parseInt(el ? el.value : fallback) || 0;
+  }
+  const baseSaturation = parseInt(document.getElementById('ps-saturation').value);
+  const baseContrast = parseInt(document.getElementById('ps-contrast').value);
+  const baseSharpness = parseInt(document.getElementById('ps-sharpness').value) / 10;
   return {
     brightness:     parseInt(document.getElementById('ps-brightness').value),
-    saturation:     parseInt(document.getElementById('ps-saturation').value),
-    hue:            100,
-    contrast:       parseInt(document.getElementById('ps-contrast').value),
+    saturation:     Math.max(70, Math.min(170, baseSaturation + Math.round((studio.colorIntensity - 50) * 0.28))),
+    hue:            100 + Math.round((studio.warmth - 50) * 0.12),
+    contrast:       Math.max(3, Math.min(28, baseContrast + Math.round(studio.cineContrast / 22))),
     contrastOffset: 3,
-    sharpness:      parseInt(document.getElementById('ps-sharpness').value) / 10,
+    sharpness:      Math.max(0.1, Math.min(3, baseSharpness + studio.texture / 130)),
     contrastStretch:'0.5%x0.5%',
+    studio,
   };
 }
+
+function applyPresetPreviewStyle() {
+  const img = document.getElementById('preview-after');
+  if (!img) return;
+  const p = getPresetEditorParams();
+  const studio = p.studio || {};
+  img.style.setProperty('--pv-bright', (p.brightness / 100).toFixed(2));
+  img.style.setProperty('--pv-sat', (p.saturation / 100).toFixed(2));
+  img.style.setProperty('--pv-contrast', (1 + (p.contrast - 10) / 60 + studio.depth / 500).toFixed(2));
+  img.style.setProperty('--pv-glow', `${Math.round(studio.glow / 5)}px`);
+}
+
+function schedulePresetPreview() {
+  if (!_presetTestFile) return;
+  clearTimeout(_presetPreviewTimer);
+  _presetPreviewTimer = setTimeout(() => _runPresetTest(_presetTestFile, { live:true }), 650);
+}
+
 async function testCustomPreset(file) {
   if (!file) return;
   _presetTestFile = file;
@@ -1139,14 +1549,19 @@ async function retestCustomPreset() {
   if (!_presetTestFile) { showToast('Sélectionnez d\'abord une image de test', 'warning'); return; }
   await _runPresetTest(_presetTestFile);
 }
-async function _runPresetTest(file) {
+async function _runPresetTest(file, opts = {}) {
+  if (_presetPreviewRunning) {
+    _presetPreviewQueued = true;
+    return;
+  }
+  _presetPreviewRunning = true;
   const zone   = document.getElementById('preset-test-zone');
   const status = document.getElementById('preset-test-status');
   const cols   = document.getElementById('preview-cols');
   zone.classList.add('loading');
-  zone.textContent = 'Traitement en cours⬦';
-  status.textContent = '';
-  cols.style.display = 'none';
+  zone.textContent = opts.live ? 'Aperçu live en cours⬦' : 'Traitement en cours⬦';
+  status.textContent = opts.live ? 'Mise à jour automatique…' : '';
+  if (!opts.live) cols.style.display = 'none';
   try {
     const base64 = await toBase64(file);
     const r = await fetch('/api/preset/test', {
@@ -1157,15 +1572,41 @@ async function _runPresetTest(file) {
     if (json.error) throw new Error(json.error);
     document.getElementById('preview-before').src = 'data:image/jpeg;base64,' + json.before;
     document.getElementById('preview-after').src  = 'data:image/jpeg;base64,' + json.after;
+    applyPresetPreviewStyle();
     cols.style.display = 'grid';
-    status.textContent = 'Aperçu généré'; status.style.color = 'var(--success)';
+    status.textContent = opts.live ? 'Aperçu live mis à jour' : 'Aperçu généré'; status.style.color = 'var(--success)';
   } catch (e) {
     status.textContent = 'Erreur : ' + String(e); status.style.color = 'var(--error)';
   } finally {
     zone.classList.remove('loading');
     zone.textContent = 'Tester sur une autre image ? cliquez pour choisir';
     document.getElementById('preset-test-input').value = '';
+    _presetPreviewRunning = false;
+    if (_presetPreviewQueued) {
+      _presetPreviewQueued = false;
+      schedulePresetPreview();
+    }
   }
+}
+
+function onPresetDragEnter(e) {
+  e.preventDefault();
+  document.getElementById('preset-test-zone').classList.add('drag-over');
+}
+function onPresetDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'copy';
+}
+function onPresetDragLeave(e) {
+  e.preventDefault();
+  document.getElementById('preset-test-zone').classList.remove('drag-over');
+}
+async function onPresetDrop(e) {
+  e.preventDefault();
+  document.getElementById('preset-test-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (file && /\.(jpe?g|png)$/i.test(file.name)) await testCustomPreset(file);
+  else showToast('Déposez une image JPG ou PNG pour tester le preset', 'warning');
 }
 async function saveCustomPreset() {
   if (!_presetEditorClientId) return;
@@ -1281,6 +1722,10 @@ function toBase64(file) {
   });
 }
 
+function makeUiBatchId() {
+  return `up-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
 function setUploadStatus(msg, col) {
   const el = document.getElementById('upload-status');
   el.textContent = msg;
@@ -1290,6 +1735,7 @@ function setUploadStatus(msg, col) {
 async function uploadFiles(files) {
   const clientId = S.activeClientId;
   const total    = files.length;
+  const batchId  = total > 1 ? makeUiBatchId() : null;
   let done = 0, failed = 0;
   setUploadStatus(`Envoi 0 / ${total}...`, 'var(--muted)');
   for (const file of files) {
@@ -1297,7 +1743,7 @@ async function uploadFiles(files) {
       const data = await toBase64(file);
       const res  = await fetch('/api/upload', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientId, files: [{ name: file.name, data }] }),
+        body: JSON.stringify({ clientId, batchId, files: [{ name: file.name, data }] }),
       });
       const json = await res.json();
       if (json.ok && json.saved.length) done++; else failed++;
@@ -1325,23 +1771,41 @@ function render() {
   else if (tab === 'review')    renderReview();
   else if (tab === 'advanced')  renderAdvanced();
   else if (tab === 'clients')   renderClients();
-  else if (tab === 'logs')      renderLogs();
-  else if (tab === 'api')       renderApiKeys();
+  else if (tab === 'settings')  renderSettings();
+}
+
+function renderSettings() {
+  renderApiKeys();
+  renderLogs();
+}
+
+function formatMs(ms) {
+  if (!ms) return '—';
+  if (ms < 1000) return `${ms} ms`;
+  return `${(ms / 1000).toFixed(ms < 10000 ? 1 : 0)} s`;
 }
 
 // Section
 function renderDash() {
   const st = S.stats;
   const q  = st.queue || {};
+  const pending = q.queued || 0;
+  const active = q.active || (q.processing ? 1 : 0);
+  const completed = q.completed || 0;
+  const total = q.total || (completed + active + pending);
+  const clearState = active || pending
+    ? `Traitement ${Math.min(completed + active, total)}/${total || completed + active + pending}`
+    : 'Inactif';
 
   const dot = document.getElementById('dot');
-  if (q.processing) {
+  if (active > 0) {
     dot.classList.add('on');
-    _startProc();
-  } else if (q.queued > 0) {
+    _stopProc();
+    document.getElementById('q-status').textContent = clearState;
+  } else if (pending > 0) {
     _stopProc();
     dot.classList.add('on');
-    document.getElementById('q-status').textContent = `${q.queued} en attente`;
+    document.getElementById('q-status').textContent = `${pending} en attente`;
   } else {
     _stopProc();
     dot.classList.remove('on');
@@ -1349,9 +1813,14 @@ function renderDash() {
   }
 
   document.getElementById('stats').innerHTML = `
-    <div class="status-item"><div class="status-label">Photos traitées</div><div class="status-value">${st.retouched || 0}</div></div>
-    <div class="status-item warn" onclick="setTab('review')"><div class="status-label">À vérifier</div><div class="status-value">${S.review.length || 0}</div></div>
-    <div class="status-item info" onclick="setTab('advanced')"><div class="status-label">Retouche avancée</div><div class="status-value">${S.advanced.length || 0}</div></div>`;
+    <div class="status-item"><div class="status-label">En attente</div><div class="status-value">${pending}</div></div>
+    <div class="status-item info"><div class="status-label">En cours</div><div class="status-value">${active}</div></div>
+    <div class="status-item"><div class="status-label">Terminées</div><div class="status-value">${completed || st.retouched || 0}</div></div>
+    <div class="status-item warn"><div class="status-label">Ignorées</div><div class="status-value">${q.skipped || 0}</div></div>
+    <div class="status-item warn"><div class="status-label">Échecs</div><div class="status-value">${q.failed || 0}</div></div>
+    <div class="status-item"><div class="status-label">Temps moyen / image</div><div class="status-value">${formatMs(q.avgMs)}</div></div>
+    <div class="status-item"><div class="status-label">État</div><div class="status-value">${clearState}</div></div>
+    <div class="status-item warn"><div class="status-label">Dernière image</div><div class="status-value">${q.lastFile || '—'}</div></div>`;
 
   renderDashboardReady();
   renderDashboardReview();
@@ -1399,7 +1868,7 @@ function renderDashboardAdvanced() {
           <div class="advanced-action">${img.suggestedAction || img.reason || 'Contrôle manuel conseillé'}</div>
         </div>
       </div>`).join('')
-    : empty('review', 'Aucune retouche avancée', 'Les suggestions apparaissent ici.');
+    : empty('review', 'Aucune retouche IA', 'Les demandes de retouche manuelle apparaissent ici.');
 }
 
 // Section
@@ -1415,10 +1884,31 @@ function populatePresetFilter() {
     }).join('');
 }
 
-function renderGallery() {
+function historyTime(h, fallback) {
+  return new Date((h && (h.batchCreatedAt || h.createdAt || h.ts)) || fallback || 0).getTime() || 0;
+}
+
+function latestBatchInfo() {
+  const entries = S.history.filter(h => h && h.output);
+  if (!entries.length) return null;
+  const latest = [...entries].sort((a, b) => historyTime(b) - historyTime(a))[0];
+  if (latest.batchId) return { batchId: latest.batchId, start: historyTime(latest), fallback: false };
+  return { batchId: null, start: historyTime(latest), fallback: true };
+}
+
+function isInLatestBatch(history) {
+  const latest = latestBatchInfo();
+  if (!latest || !history) return false;
+  if (latest.batchId) return history.batchId === latest.batchId;
+  return Math.abs(historyTime(history) - latest.start) <= 10 * 60 * 1000;
+}
+
+function buildGalleryItems() {
   const min    = parseInt(document.getElementById('f-score').value) || 0;
   const sort   = document.getElementById('f-sort').value;
   const preset = document.getElementById('f-preset').value;
+  const client = document.getElementById('f-client').value;
+  const type   = document.getElementById('f-type').value;
   const hmap   = buildHistoryMap();
 
   let files = S.files.map(f => ({
@@ -1430,6 +1920,9 @@ function renderGallery() {
   })).filter(f => {
     if (f.score < min) return false;
     if (preset && (!f.history || f.history.preset !== preset)) return false;
+    if (client && f.clientId !== client) return false;
+    if (type && (!f.history || f.history.contentType !== type)) return false;
+    if (sort === 'batch' && !isInLatestBatch(f.history)) return false;
     if (S.activeClientId && f.clientId !== S.activeClientId) return false;
     return true;
   });
@@ -1438,6 +1931,14 @@ function renderGallery() {
   else if (sort === 'sa') files.sort((a, b) => a.score - b.score);
   else if (sort === 'dd') files.sort((a, b) => new Date(b.ts) - new Date(a.ts));
   else if (sort === 'da') files.sort((a, b) => new Date(a.ts) - new Date(b.ts));
+  else if (sort === 'batch') files.sort((a, b) => historyTime(b.history, b.ts) - historyTime(a.history, a.ts));
+
+  return files;
+}
+
+function renderGallery() {
+  const files = buildGalleryItems();
+  lastGalleryFiles = files;
 
   const suffix = S.activeClientId
     ? ` — ${(S.clients.find(c => c.id === S.activeClientId) || {}).name || ''}`
@@ -1446,6 +1947,169 @@ function renderGallery() {
   document.getElementById('gal-grid').innerHTML = files.length
     ? files.map((f, i) => imgCard(f, false, i)).join('')
     : empty('gallery', 'Aucune image ici', 'Glisse tes photos pour commencer', 'Uploader des photos', "document.getElementById('file-input').click()");
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulk-bar');
+  if (!bar) return;
+  const count = selectedImages.size;
+  document.getElementById('bulk-count').textContent = count;
+  bar.classList.toggle('active', count > 0);
+  document.querySelectorAll('.img-card').forEach(card => {
+    const cb = card.querySelector('.card-select');
+    if (cb) card.classList.toggle('is-selected', cb.checked);
+  });
+}
+
+function toggleImageSelection(name, checked) {
+  if (checked) selectedImages.add(name);
+  else selectedImages.delete(name);
+  updateBulkBar();
+}
+
+function clearSelection() {
+  selectedImages.clear();
+  renderGallery();
+}
+
+function selectFromGallery(predicate) {
+  const files = lastGalleryFiles.length ? lastGalleryFiles : buildGalleryItems();
+  for (const f of files) {
+    if (!predicate || predicate(f)) selectedImages.add(f.name);
+  }
+  renderGallery();
+}
+
+function selectVisible() {
+  selectFromGallery();
+}
+
+function selectLastBatch() {
+  selectFromGallery(f => isInLatestBatch(f.history));
+}
+
+function selectBatchLike(batchId, batchDate) {
+  const when = new Date(batchDate || 0).getTime() || 0;
+  selectFromGallery(f => {
+    const h = f.history;
+    if (!h) return false;
+    if (batchId) return h.batchId === batchId;
+    return when && Math.abs(historyTime(h) - when) <= 10 * 60 * 1000;
+  });
+}
+
+function selectScoreAbove(min) {
+  selectFromGallery(f => f.score > min);
+}
+
+function selectType(type) {
+  selectFromGallery(f => f.history && f.history.contentType === type);
+}
+
+function selectedList() {
+  return [...selectedImages];
+}
+
+function bulkExport() {
+  if (!selectedImages.size) return;
+  showToast('Exports disponibles dans la sous-section Exports.', 'info');
+  setTab('exports');
+}
+
+function exportOne() {
+  showToast('Exports disponibles dans la sous-section Exports.', 'info');
+  setTab('exports');
+}
+
+async function queueAi(files) {
+  const res = await fetch('/api/advanced/queue', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ files }),
+  });
+  if (!res.ok) throw new Error('queue failed');
+  await fetchAll();
+}
+
+function dragImageToAi(e, name) {
+  e.dataTransfer.effectAllowed = 'copy';
+  e.dataTransfer.setData('text/plain', name);
+  e.dataTransfer.setData('application/x-retouch-photo', name);
+}
+
+function onAiDragEnter(e) {
+  e.preventDefault();
+  document.getElementById('ai-drop-zone').classList.add('drag-over');
+}
+function onAiDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'copy';
+}
+function onAiDragLeave(e) {
+  e.preventDefault();
+  document.getElementById('ai-drop-zone').classList.remove('drag-over');
+}
+async function onAiDrop(e) {
+  e.preventDefault();
+  document.getElementById('ai-drop-zone').classList.remove('drag-over');
+  const name = e.dataTransfer.getData('application/x-retouch-photo') || e.dataTransfer.getData('text/plain');
+  if (name) {
+    await queueOneAi(name);
+    return;
+  }
+  showToast('Glissez une photo depuis la galerie pour l’ajouter en Retouche IA', 'info');
+}
+
+async function queueOneAi(name) {
+  try {
+    await queueAi([name]);
+    showToast('Photo ajoutée en Retouche IA', 'success');
+    setTab('advanced');
+  } catch {
+    showToast('Impossible d’ajouter la photo en Retouche IA', 'error');
+  }
+}
+
+async function bulkQueueAi() {
+  const files = selectedList();
+  if (!files.length) return;
+  try {
+    await queueAi(files);
+    selectedImages.clear();
+    showToast(`${files.length} photo(s) ajoutée(s) en Retouche IA`, 'success');
+    setTab('advanced');
+  } catch {
+    showToast('Impossible d’ajouter la sélection en Retouche IA', 'error');
+  }
+}
+
+async function markSelected(files) {
+  for (const name of files) {
+    await fetch(`/api/selected/${encodeURIComponent(name)}`, { method: 'POST' });
+  }
+  await fetchAll();
+}
+
+async function markOneSelected(name) {
+  try {
+    await markSelected([name]);
+    showToast('Photo marquée comme sélectionnée', 'success');
+  } catch {
+    showToast('Impossible de marquer la photo', 'error');
+  }
+}
+
+async function bulkMarkSelected() {
+  const files = selectedList();
+  if (!files.length) return;
+  try {
+    await markSelected(files);
+    selectedImages.clear();
+    showToast(`${files.length} photo(s) marquée(s) comme sélectionnée(s)`, 'success');
+  } catch {
+    showToast('Impossible de marquer la sélection', 'error');
+  }
 }
 
 // Section
@@ -1462,6 +2126,9 @@ function imgCard(f, isExport, idx = 0) {
   const sqName   = h && h.exports && h.exports.square   ? h.exports.square   : null;
   const portBtn  = portName ? `<a class="exp-btn" href="/portrait/${portName}" target="_blank" onclick="event.stopPropagation()">Portrait</a>` : '';
   const sqBtn    = sqName   ? `<a class="exp-btn" href="/square/${sqName}"     target="_blank" onclick="event.stopPropagation()">Carré</a>`   : '';
+  const batchBtn = h && (h.batchId || h.batchCreatedAt || h.ts)
+    ? `<button onclick="event.stopPropagation();selectBatchLike('${h.batchId || ''}', '${h.batchCreatedAt || h.ts || ''}')">Sélectionner ce lot</button>`
+    : '';
 
   // Staggered fade-in only for newly appeared cards
   const isNew    = !_shownCards.has(f.url);
@@ -1469,12 +2136,16 @@ function imgCard(f, isExport, idx = 0) {
   const animCss  = isNew ? `animation-delay:${Math.min(idx * 0.04, 0.32).toFixed(2)}s` : 'animation:none';
 
   const splitPct = _split.positions.get(f.url) || 50;
+  const checked = selectedImages.has(f.name) ? ' checked' : '';
+  const selectedClass = selectedImages.has(f.name) ? ' is-selected' : '';
 
   return `
-    <div class="img-card${isExport ? ' exp-card' : ''}" style="${animCss}" onclick="openModal('${f.url}')">
+    <div class="img-card${isExport ? ' exp-card' : ''}${selectedClass}" style="${animCss}" onclick="cardOpen(event,'${f.url}')"
+      ${isExport ? '' : `draggable="true" ondragstart="dragImageToAi(event,'${f.name}')"`}>
       <div class="card-img-wrap" style="--split:${splitPct}%">
+        ${isExport ? '' : `<input class="card-select" type="checkbox"${checked} onclick="event.stopPropagation();toggleImageSelection('${f.name}', this.checked)">`}
         <img class="img-main" src="${f.url}" alt="${f.name}" loading="lazy" onerror="_imgErr(this)">
-        <div class="split-before"></div>
+        ${beforeImg(h && h.original)}
         <div class="split-divider"></div>
         <div class="split-handle" onclick="event.stopPropagation()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 7H1M10 7h3M4 4l-3 3 3 3M10 4l3 3-3 3" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1489,12 +2160,18 @@ function imgCard(f, isExport, idx = 0) {
           <span class="exp-links">${portBtn}${sqBtn}</span>
         </div>
         ${contentBadges(cTyp, cCnf)}
-        <div class="card-score-row">
+        <div class="card-score-row score-tooltip" data-tip="N = Netteté, L = Lumière, C = Couleurs. 90–100 excellent, 75–89 très bon, 60–74 correct, moins de 60 à vérifier.">
           ${qualityBadge(s)}
           <span class="score-num" style="color:${color(s)}">Score : ${s}</span>
           <div class="score-bar"><div class="score-fill" style="width:${s}%;background:${color(s)}"></div></div>
         </div>
-        ${sc.sharpness !== undefined ? `<div class="score-detail"><span>N ${sc.sharpness}</span><span>L ${sc.brightness}</span><span>C ${sc.contrast}</span></div>` : ''}
+        ${sc.sharpness !== undefined ? `<div class="score-detail"><span title="Netteté">N ${sc.sharpness}</span><span title="Lumière">L ${sc.brightness}</span><span title="Couleurs">C ${sc.contrast}</span></div>` : ''}
+        ${isExport ? '' : `<div class="card-actions">
+          <button onclick="event.stopPropagation();openModal('${f.url}')">Voir</button>
+          <button onclick="event.stopPropagation();exportOne()">Exporter</button>
+          <button onclick="event.stopPropagation();queueOneAi('${f.name}')">Retouche IA</button>
+          ${batchBtn}
+        </div>`}
       </div>
     </div>`;
 }
@@ -1503,6 +2180,7 @@ function imgCard(f, isExport, idx = 0) {
 function renderExports() {
   const portFiles = S.exports.portrait || [];
   const sqFiles   = S.exports.square   || [];
+  const hmap       = buildHistoryMap();
 
   document.getElementById('exp-portrait').innerHTML = portFiles.length
     ? portFiles.map((f, i) => {
@@ -1510,10 +2188,11 @@ function renderExports() {
         _shownCards.add(f.url);
         const animCss = isNew ? `animation-delay:${Math.min(i * 0.04, 0.32).toFixed(2)}s` : 'animation:none';
         const sp = _split.positions.get(f.url) || 50;
-        return `<div class="img-card exp-card" style="${animCss}" onclick="openModal('${f.url}')">
+        const h = hmap[f.name] || null;
+        return `<div class="img-card exp-card" style="${animCss}" onclick="cardOpen(event,'${f.url}')">
           <div class="card-img-wrap" style="--split:${sp}%">
             <img class="img-main" src="${f.url}" alt="${f.name}" loading="lazy" onerror="_imgErr(this)">
-            <div class="split-before"></div>
+            ${beforeImg(h && h.original)}
             <div class="split-divider"></div>
             <div class="split-handle" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 7H1M10 7h3M4 4l-3 3 3 3M10 4l3 3-3 3" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="split-labels"><span>Avant</span><span>Après</span></div>
@@ -1533,10 +2212,11 @@ function renderExports() {
         _shownCards.add(f.url);
         const animCss = isNew ? `animation-delay:${Math.min(i * 0.04, 0.32).toFixed(2)}s` : 'animation:none';
         const sp = _split.positions.get(f.url) || 50;
-        return `<div class="img-card exp-card exp-card-sq" style="${animCss}" onclick="openModal('${f.url}')">
+        const h = hmap[f.name] || null;
+        return `<div class="img-card exp-card exp-card-sq" style="${animCss}" onclick="cardOpen(event,'${f.url}')">
           <div class="card-img-wrap" style="--split:${sp}%">
             <img class="img-main" src="${f.url}" alt="${f.name}" loading="lazy" onerror="_imgErr(this)">
-            <div class="split-before"></div>
+            ${beforeImg(h && h.original)}
             <div class="split-divider"></div>
             <div class="split-handle" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 7H1M10 7h3M4 4l-3 3 3 3M10 4l3 3-3 3" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="split-labels"><span>Avant</span><span>Après</span></div>
@@ -1605,17 +2285,43 @@ async function rejectReview(filename) {
 
 // Advanced retouch tab
 const ADVANCED_STATUS = {
+  pending:   'En attente',
+  ready:     'Prête',
+  ai_requested: 'Demandée',
+  done:      'Terminée',
+  cancelled: 'Annulée',
   suggested: 'À vérifier',
   kept:      'Gardée telle quelle',
   later:     'À corriger plus tard',
 };
 
 function renderAdvanced() {
-  const items = S.advanced;
+  const items = S.advanced.filter(i => i.status !== 'cancelled');
   document.getElementById('advanced-count').textContent = items.length;
+  const countPending = items.filter(i => !i.status || i.status === 'pending').length;
+  const countReady = items.filter(i => i.status === 'ready').length;
+  const countRequested = items.filter(i => i.status === 'ai_requested').length;
+  const countDone = items.filter(i => i.status === 'done').length;
+  const pendingEl = document.getElementById('ai-pending-count');
+  if (pendingEl) pendingEl.textContent = `${countPending} en attente`;
+  const stPending = document.getElementById('ai-state-pending');
+  const stReady = document.getElementById('ai-state-ready');
+  const stRequested = document.getElementById('ai-state-requested');
+  const stDone = document.getElementById('ai-state-done');
+  if (stPending) stPending.textContent = countPending;
+  if (stReady) stReady.textContent = countReady;
+  if (stRequested) stRequested.textContent = countRequested;
+  if (stDone) stDone.textContent = countDone;
   const navBtn = document.getElementById('nav-advanced');
   if (items.length > 0) { navBtn.classList.add('has-alert'); navBtn.dataset.count = items.length; }
   else { navBtn.classList.remove('has-alert'); delete navBtn.dataset.count; }
+
+  const thumbStrip = document.getElementById('ai-thumb-strip');
+  if (thumbStrip) {
+    thumbStrip.innerHTML = items.length
+      ? items.slice(0, 12).map(img => `<div class="ai-thumb"><img src="${img.url}" alt="${img.name}" loading="lazy"><span>${img.name}</span></div>`).join('')
+      : '';
+  }
 
   document.getElementById('advanced-grid').innerHTML = items.length
     ? items.map(img => `
@@ -1626,17 +2332,24 @@ function renderAdvanced() {
           <div class="no-img">IMG</div>
           <div class="review-info">
             <div class="review-name">${img.name}</div>
-            <div class="advanced-status">${ADVANCED_STATUS[img.status] || 'À vérifier'}</div>
-            <div class="review-reason">${img.reason || 'Retouche avancée suggérée'}</div>
-            <div class="advanced-action">${img.suggestedAction || 'Contrôle manuel conseillé'}</div>
+            <div class="advanced-status st-${img.status || 'pending'}">${ADVANCED_STATUS[img.status] || 'À vérifier'}</div>
+            <div class="review-reason">${img.reason || 'Retouche IA demandée'}</div>
+            <div class="advanced-action">${img.instruction || img.suggestedAction || 'Instruction à préciser'}</div>
             <div class="review-actions">
-              <button class="btn-approve" onclick="setAdvancedStatus('${img.name}', 'kept')">Garder tel quel</button>
-              <button class="btn-later" onclick="setAdvancedStatus('${img.name}', 'later')">À corriger plus tard</button>
-              <button class="btn-ghost" onclick="advancedAiNotice()">IA avancée optionnelle</button>
+              <button class="btn-approve" onclick="setAdvancedStatus('${img.name}', 'done')">Terminé</button>
+              <button class="btn-later" onclick="setAdvancedStatus('${img.name}', 'cancelled')">Retirer</button>
+              <button class="btn-ghost" onclick="advancedAiNotice()">Connexion API</button>
             </div>
           </div>
         </div>`).join('')
-    : empty('review', 'Aucune retouche avancée', 'Les suggestions apparaîtront ici sans bloquer le pipeline');
+    : empty('review', 'Aucune retouche IA', 'Ajoute une photo depuis la galerie pour préparer une retouche manuelle');
+}
+
+function useAiExample(text) {
+  const el = document.getElementById('ai-instruction');
+  if (!el) return;
+  el.value = text;
+  el.focus();
 }
 
 async function setAdvancedStatus(filename, status) {
@@ -1656,7 +2369,28 @@ async function setAdvancedStatus(filename, status) {
 }
 
 function advancedAiNotice() {
-  showToast('IA avancée préparée mais non activée.', 'info');
+  showToast('Retouche IA prête à être lancée — connexion API non activée dans cette version.', 'info');
+}
+
+async function prepareAiRetouch() {
+  const instruction = document.getElementById('ai-instruction').value.trim();
+  const provider = document.getElementById('ai-provider').value;
+  const msg = document.getElementById('ai-message');
+  try {
+    const res = await fetch('/api/advanced/prepare', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ instruction, provider }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'prepare failed');
+    msg.textContent = data.message;
+    await fetchAll();
+    showToast(data.message, 'info');
+  } catch {
+    msg.textContent = 'Impossible de préparer la retouche IA.';
+    showToast('Impossible de préparer la retouche IA', 'error');
+  }
 }
 
 // Section
@@ -1829,7 +2563,7 @@ async function deleteApiKey(provider) {
 async function refreshApiKeys() {
   const keys = await fetch('/api/settings/keys').then(r => r.json());
   S.apiKeys = Array.isArray(keys) ? keys : [];
-  if (tab === 'api') renderApiKeys();
+  if (tab === 'settings') renderApiKeys();
 }
 
 function showApiAlert(cls, msg) {

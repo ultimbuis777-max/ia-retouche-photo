@@ -20,6 +20,7 @@ function imageService() { return require('./imageService'); }
 const app = express();
 app.use(express.json({ limit: '30mb' }));
 app.use(express.static(config.paths.public));
+app.use('/raw',       express.static(config.paths.raw));
 app.use('/retouched', express.static(config.paths.retouched));
 app.use('/selected',  express.static(config.paths.selected));
 app.use('/portrait',  express.static(config.paths.portrait));
@@ -112,10 +113,67 @@ app.get('/api/advanced', (_req, res) => {
   })));
 });
 
+app.post('/api/advanced/queue', (req, res) => {
+  const files = Array.isArray(req.body && req.body.files) ? req.body.files : [req.body && req.body.filename];
+  const queued = [];
+  const errors = [];
+
+  try {
+    if (!fs.existsSync(config.paths.advanced)) fs.mkdirSync(config.paths.advanced, { recursive: true });
+    const data = loadJSON(config.data.advanced, {});
+
+    for (const item of files) {
+      const filename = path.basename(String(item || ''));
+      if (!filename) continue;
+      const src = path.join(config.paths.retouched, filename);
+      const dest = path.join(config.paths.advanced, filename);
+      if (!fs.existsSync(src)) { errors.push({ filename, error: 'not found' }); continue; }
+      if (!fs.existsSync(dest)) fs.copyFileSync(src, dest);
+      data[filename] = {
+        ...(data[filename] || {}),
+        output: filename,
+        status: 'pending',
+        reason: data[filename] && data[filename].reason ? data[filename].reason : 'Retouche IA demandée',
+        suggestedAction: data[filename] && data[filename].suggestedAction ? data[filename].suggestedAction : 'Instruction manuelle à préciser',
+        updatedAt: new Date().toISOString(),
+      };
+      queued.push(filename);
+    }
+
+    saveJSON(config.data.advanced, data);
+    res.json({ ok: true, queued, errors });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
+app.post('/api/advanced/prepare', (req, res) => {
+  const instruction = String((req.body && req.body.instruction) || '').trim();
+  const provider = sanitizeProvider(req.body && req.body.provider);
+  if (!provider) return res.status(400).json({ error: 'invalid provider' });
+
+  try {
+    const data = loadJSON(config.data.advanced, {});
+    let count = 0;
+    for (const item of Object.values(data)) {
+      if (!item || !['pending', 'suggested', 'later'].includes(item.status)) continue;
+      item.status = 'ready';
+      item.provider = provider;
+      item.instruction = instruction;
+      item.updatedAt = new Date().toISOString();
+      count++;
+    }
+    saveJSON(config.data.advanced, data);
+    res.json({ ok: true, ready: count, message: 'Retouche IA prête à être lancée — connexion API non activée dans cette version.' });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 app.post('/api/advanced/:filename/status', (req, res) => {
   const filename = path.basename(req.params.filename || '');
   const status   = String((req.body && req.body.status) || '').trim();
-  if (!filename || !['kept', 'later', 'suggested'].includes(status)) {
+  if (!filename || !['pending', 'ready', 'ai_requested', 'done', 'cancelled', 'kept', 'later', 'suggested'].includes(status)) {
     return res.status(400).json({ error: 'invalid status' });
   }
 
@@ -128,6 +186,22 @@ app.post('/api/advanced/:filename/status', (req, res) => {
     };
     saveJSON(config.data.advanced, data);
     res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
+app.post('/api/selected/:filename', (req, res) => {
+  const filename = path.basename(req.params.filename || '');
+  if (!filename) return res.status(400).json({ error: 'invalid filename' });
+  const src = path.join(config.paths.retouched, filename);
+  const dest = path.join(config.paths.selected, filename);
+  if (!fs.existsSync(src)) return res.status(404).json({ error: 'not found' });
+
+  try {
+    if (!fs.existsSync(config.paths.selected)) fs.mkdirSync(config.paths.selected, { recursive: true });
+    fs.copyFileSync(src, dest);
+    res.json({ ok: true, filename });
   } catch (e) {
     res.status(500).json({ error: String(e) });
   }
@@ -278,6 +352,7 @@ app.get('/api/client-uploads', (_req, res) => res.json(loadJSON(CLIENT_UPLOADS_F
 
 app.post('/api/upload', (req, res) => {
   const { clientId, files } = req.body;
+  const batchId = req.body && req.body.batchId ? String(req.body.batchId) : null;
   if (!Array.isArray(files) || files.length === 0) {
     return res.status(400).json({ error: 'files array required' });
   }
@@ -290,6 +365,8 @@ app.post('/api/upload', (req, res) => {
   const uploads = loadJSON(CLIENT_UPLOADS_FILE, {});
   const saved   = [];
   const errors  = [];
+  const uploadBatchId = batchId || (files.length > 1 ? makeId() : null);
+  const uploadCreatedAt = new Date().toISOString();
 
   for (const file of files) {
     if (!file.name || !file.data) { errors.push({ name: file.name || '?', error: 'missing data' }); continue; }
@@ -298,15 +375,21 @@ app.post('/api/upload', (req, res) => {
       if (!safeName) throw new Error('invalid filename');
       const dest = path.join(config.paths.raw, safeName);
       fs.writeFileSync(dest, Buffer.from(file.data, 'base64'));
-      if (clientId) uploads[safeName] = clientId;
+      if (clientId || uploadBatchId) {
+        uploads[safeName] = {
+          clientId: clientId || null,
+          batchId: uploadBatchId,
+          createdAt: uploadCreatedAt,
+        };
+      }
       saved.push(safeName);
     } catch (e) {
       errors.push({ name: file.name, error: String(e) });
     }
   }
 
-  if (clientId && saved.length > 0) saveJSON(CLIENT_UPLOADS_FILE, uploads);
-  res.json({ ok: true, saved, errors });
+  if ((clientId || uploadBatchId) && saved.length > 0) saveJSON(CLIENT_UPLOADS_FILE, uploads);
+  res.json({ ok: true, saved, errors, batchId: uploadBatchId, createdAt: uploadCreatedAt });
 });
 
 // ── Review ────────────────────────────────────────────────────────────────────

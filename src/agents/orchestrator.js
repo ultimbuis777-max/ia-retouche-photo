@@ -81,16 +81,70 @@ function saveAdvancedSuggestion(sourcePath, outName, payload) {
   }
 }
 
+function createTimer() {
+  const start = Date.now();
+  const marks = {};
+  return {
+    mark(step) { marks[step] = Date.now(); },
+    duration(step) { return marks[step] ? Date.now() - marks[step] : 0; },
+    total() { return Date.now() - start; },
+  };
+}
+
+function logPerf(file, step, durationMs, extra = {}) {
+  logger.info(`Durée ${step}: ${durationMs}ms`, {
+    type: 'PERF_STEP',
+    file,
+    step,
+    durationMs,
+    ...extra,
+  });
+}
+
 // ── Fallback processor (called once on failure) ─────────────────────────────
+
+function hasSource(filePath, fileName, step) {
+  if (filePath && fs.existsSync(filePath)) return true;
+  logger.info('SOURCE_MISSING_SKIP', {
+    status: 'skipped',
+    type: 'SOURCE_MISSING_SKIP',
+    file: fileName,
+    step,
+  });
+  return false;
+}
+
+function skippedMissingSource(fileName, timer, step) {
+  logPerf(fileName, 'total', timer.total(), { reason: 'skipped_missing_source', step });
+  return {
+    success: false,
+    skipped: true,
+    status: 'skipped_missing_source',
+    reason: 'missing_source',
+    step,
+  };
+}
 
 async function processRetry(filePath, fileName) {
   const pre = tmpPath('r_pre', fileName);
   const enh = tmpPath('r_enh', fileName);
   try {
+    if (!hasSource(filePath, fileName, 'retry_preprocess')) {
+      return { success: false, skipped: true, status: 'skipped_missing_source', reason: 'missing_source', step: 'retry_preprocess' };
+    }
+    if (!hasSource(filePath, fileName, 'preprocess')) {
+      return skippedMissingSource(fileName, timer, 'preprocess');
+    }
     imageService().preprocess(filePath, pre);
     const presets   = presetAgent.loadPresets();
     const params    = (presets['default'] || { params: {} }).params;
+    if (!hasSource(pre, fileName, 'retry_enhance')) {
+      return { success: false, skipped: true, status: 'skipped_missing_source', reason: 'missing_source', step: 'retry_enhance' };
+    }
     enhanceAgent.enhance(pre, enh, params);
+    if (!hasSource(enh, fileName, 'retry_save')) {
+      return { success: false, skipped: true, status: 'skipped_missing_source', reason: 'missing_source', step: 'retry_save' };
+    }
     const retouchedPath = namingAgent.generate(filePath, config.paths.retouched);
     fs.copyFileSync(enh, retouchedPath);
     const outName   = path.basename(retouchedPath);
@@ -116,12 +170,17 @@ async function processRetry(filePath, fileName) {
 async function process(filePath) {
   const fileName = path.basename(filePath);
   logger.processing(fileName);
+  const timer = createTimer();
 
   const pre = tmpPath('pre', fileName);
   const enh = tmpPath('enh', fileName);
   const up  = tmpPath('up',  fileName);
 
   try {
+    if (!hasSource(filePath, fileName, 'validation')) {
+      return skippedMissingSource(fileName, timer, 'validation');
+    }
+
     // 0. Validation — reject obviously bad images before heavy processing
     const validation = validationAgent.validate(filePath);
     if (!validation.valid) {
@@ -144,14 +203,21 @@ async function process(filePath) {
     imageService().preprocess(filePath, pre);
 
     // 2. Analysis — measure image characteristics
+    if (!hasSource(pre, fileName, 'analyse')) {
+      return skippedMissingSource(fileName, timer, 'analyse');
+    }
+    timer.mark('analyse');
     let analysis = { brightness: 0.5, contrast: 0.15, saturation: 0.5, temperature: 0, sharpness: 50 };
     try { analysis = analysisAgent.analyze(pre); } catch {}
+    logPerf(fileName, 'analyse', timer.duration('analyse'));
 
     // 3. Content detection — visual heuristics + EMA smoothing + confidence labelling
     //    Falls back to name-based keywords if vision confidence is low, then 'general'
     let visionResult = { type: 'general', confidence: 'low', confidenceScore: 0.3, source: 'fallback' };
     try {
-      visionResult = contentVisionAgent.detectFull(pre, analysis, filePath);
+      if (hasSource(pre, fileName, 'content_detection')) {
+        visionResult = contentVisionAgent.detectFull(pre, analysis, filePath);
+      }
     } catch {
       try { visionResult.type = contentDetectionAgent.detect(filePath); } catch {}
     }
@@ -160,10 +226,19 @@ async function process(filePath) {
 
     // 3b. Client lookup — resolve clientId from upload mapping (for learned preset + recording)
     let clientId = null;
+    let uploadBatchId = null;
+    let uploadCreatedAt = null;
     try {
       const uploadsPath = path.resolve(__dirname, '..', '..', 'data', 'client-uploads.json');
       const uploads     = JSON.parse(fs.readFileSync(uploadsPath, 'utf8'));
-      clientId = uploads[fileName] || null;
+      const uploadMeta = uploads[fileName] || null;
+      if (uploadMeta && typeof uploadMeta === 'object') {
+        clientId = uploadMeta.clientId || null;
+        uploadBatchId = uploadMeta.batchId || null;
+        uploadCreatedAt = uploadMeta.createdAt || null;
+      } else {
+        clientId = uploadMeta || null;
+      }
     } catch {}
 
     // 4. Preset selection + dynamic adaptation + content-type tuning + learned override
@@ -179,15 +254,28 @@ async function process(filePath) {
     try { consistencyAgent.record(sessionId, analysis); } catch {}
 
     // 7. Enhance — apply full ImageMagick pipeline
+    if (!hasSource(pre, fileName, 'enhance')) {
+      return skippedMissingSource(fileName, timer, 'enhance');
+    }
+    timer.mark('enhance');
     enhanceAgent.enhance(pre, enh, finalParams);
+    logPerf(fileName, 'enhance', timer.duration('enhance'));
 
     // 7. Upscale (optional, disabled by default)
     let finalTmp = enh;
+    if (!hasSource(enh, fileName, 'upscale')) {
+      return skippedMissingSource(fileName, timer, 'upscale');
+    }
     if (upscaleService.upscale(enh, up)) finalTmp = up;
 
     // 8. Score — measure output quality
+    if (!hasSource(finalTmp, fileName, 'score')) {
+      return skippedMissingSource(fileName, timer, 'score');
+    }
+    timer.mark('score');
     let scoreData = { total: 50, sharpness: 50, brightness: 50, contrast: 50 };
     try { scoreData = scoringAgent.score(finalTmp); } catch {}
+    logPerf(fileName, 'score', timer.duration('score'));
 
     // 8b. Low-quality filter — reject images below threshold
     if (scoreData.total < 45) {
@@ -199,6 +287,7 @@ async function process(filePath) {
       markDone(filePath);
       cleanup(pre, enh, up);
       logger.failed(fileName, new Error(`Score trop bas (${scoreData.total}/100) — image rejetée`));
+      logPerf(fileName, 'total', timer.total(), { reason: 'low_quality' });
       return { success: false, score: scoreData.total, reason: 'low_quality' };
     }
 
@@ -243,8 +332,13 @@ async function process(filePath) {
     }
 
     // 10. Export social formats (portrait + square)
+    if (!hasSource(finalTmp, fileName, 'export')) {
+      return skippedMissingSource(fileName, timer, 'export');
+    }
+    timer.mark('export');
     let exports = { portrait: null, square: null };
     try { exports = exportAgent.exportSocial(finalTmp, outName); } catch {}
+    logPerf(fileName, 'export', timer.duration('export'));
 
     // 11. Auto-select if score meets threshold
     let selected = false;
@@ -265,6 +359,9 @@ async function process(filePath) {
       presetName:        presetResult.name,
       learned:           presetResult.learned || false,
       clientId:          clientId || undefined,
+      batchId:           uploadBatchId || undefined,
+      createdAt:         uploadCreatedAt || undefined,
+      batchCreatedAt:    uploadCreatedAt || undefined,
       contentType,
       contentConfidence,
       selected,
@@ -287,11 +384,15 @@ async function process(filePath) {
     markDone(filePath);
     cleanup(pre, enh, up);
 
+    logPerf(fileName, 'total', timer.total(), { output: outName });
     logger.done(fileName, scoreData.total, { output: outName, preset: presetResult.key, selected });
     return { success: true, score: scoreData.total, output: retouchedPath, preset: presetResult.key, exports };
 
   } catch (err) {
     cleanup(pre, enh, up);
+    if (!fs.existsSync(filePath)) {
+      return skippedMissingSource(fileName, timer, 'catch_retry');
+    }
     // One retry with default preset before failing
     try {
       return await processRetry(filePath, fileName);

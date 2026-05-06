@@ -2,5 +2,6 @@
     "snyk.advanced.autoSelectOrganization": true,
     "chat.useClaudeMdFile": true,
     "claudeCode.allowDangerouslySkipPermissions": true,
-    "github.copilot.chat.claudeAgent.allowDangerouslySkipPermissions": true
+    "github.copilot.chat.claudeAgent.allowDangerouslySkipPermissions": true,
+    "snyk.advanced.organization": "04d24bac-b464-4249-a817-84c9cdde3f05"
 }

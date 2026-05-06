@@ -45,6 +45,10 @@ module.exports = {
     topN:           3,
     sessionWindowMs: 600000, // 10-minute session for consistency grouping
   },
+  queue: {
+    concurrency: Math.min(Math.max(parseInt(process.env.PHOTO_AGENT_CONCURRENCY || '2', 10) || 2, 1), 2),
+    maxConcurrency: 2,
+  },
   server: {
     port: 3000,
   },

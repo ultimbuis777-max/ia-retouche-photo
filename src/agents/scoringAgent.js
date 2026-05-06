@@ -4,12 +4,7 @@ const { execFileSync } = require('child_process');
 const fs     = require('fs');
 const config = require('../config');
 
-// ── Constants ────────────────────────────────────────────────────────────────
-
-/** Weighted formula: sharpness 50%, contrast 30%, brightness 20% */
 const WEIGHTS = { sharpness: 0.5, contrast: 0.3, brightness: 0.2 };
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
 
 function _clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
@@ -23,8 +18,6 @@ function _imRun(args) {
   catch { return null; }
 }
 
-// ── Image measurements (used when scoring by file path) ──────────────────────
-
 function _measureSharpness(imagePath) {
   const raw = _imRun([
     imagePath,
@@ -37,32 +30,27 @@ function _measureSharpness(imagePath) {
   return _clamp(Math.round(_safeFloat(raw, 0.05) * 600), 0, 100);
 }
 
+function _measureLuma(imagePath) {
+  const raw = _imRun([imagePath, '-colorspace', 'Gray', '-format', '%[fx:mean] %[fx:standard_deviation]', 'info:']);
+  if (!raw) return { brightness: 50, contrast: 50 };
+
+  const [meanRaw, stdRaw] = raw.split(/\s+/);
+  const mean = _safeFloat(meanRaw, 0.5);
+
+  return {
+    brightness: _clamp(Math.round((1 - Math.abs(mean - 0.5) * 2.2) * 100), 0, 100),
+    contrast:   _clamp(Math.round(_safeFloat(stdRaw, 0.15) * 350), 0, 100),
+  };
+}
+
 function _measureBrightness(imagePath) {
-  const raw = _imRun([imagePath, '-colorspace', 'Gray', '-format', '%[fx:mean]', 'info:']);
-  const v   = _safeFloat(raw, 0.5);
-  // Distance from ideal mid-tone 0.5 → penalise over/under-exposure
-  return _clamp(Math.round((1 - Math.abs(v - 0.5) * 2.2) * 100), 0, 100);
+  return _measureLuma(imagePath).brightness;
 }
 
 function _measureContrast(imagePath) {
-  const raw = _imRun([imagePath, '-colorspace', 'Gray', '-format', '%[fx:standard_deviation]', 'info:']);
-  return _clamp(Math.round(_safeFloat(raw, 0.15) * 350), 0, 100);
+  return _measureLuma(imagePath).contrast;
 }
 
-// ── Score calculation ─────────────────────────────────────────────────────────
-
-/**
- * Compute weighted quality score from an analysis object.
- *
- * Formula:
- *   total = sharpness * 0.5 + contrast * 0.3 + brightness * 0.2
- *
- * All input dimensions are expected in [0, 100].
- * Missing or invalid values fall back to 50 (neutral).
- *
- * @param {{ sharpness?: number, contrast?: number, brightness?: number }} analysis
- * @returns {{ total: number, sharpness: number, contrast: number, brightness: number }}
- */
 function scoreFromAnalysis(analysis = {}) {
   const sharpness  = _clamp(_safeFloat(analysis.sharpness,  50), 0, 100);
   const contrast   = _clamp(_safeFloat(analysis.contrast,   50), 0, 100);
@@ -80,30 +68,15 @@ function scoreFromAnalysis(analysis = {}) {
   return { total, sharpness, contrast, brightness };
 }
 
-/**
- * Measure image quality directly from a file path using ImageMagick,
- * then apply the weighted formula.
- *
- * @param {string} imagePath
- * @returns {{ total: number, sharpness: number, brightness: number, contrast: number }}
- */
 function score(imagePath) {
   const sharpness  = _measureSharpness(imagePath);
-  const brightness = _measureBrightness(imagePath);
-  const contrast   = _measureContrast(imagePath);
+  const luma       = _measureLuma(imagePath);
+  const brightness = luma.brightness;
+  const contrast   = luma.contrast;
 
   return scoreFromAnalysis({ sharpness, brightness, contrast });
 }
 
-// ── Persistence ───────────────────────────────────────────────────────────────
-
-/**
- * Persist score data for a named output file.
- * Merges into the existing scores store; creates the file if absent.
- *
- * @param {string} fileName  output filename (used as key)
- * @param {object} scoreData result from score() or scoreFromAnalysis()
- */
 function saveScore(fileName, scoreData) {
   let scores = {};
   try { scores = JSON.parse(fs.readFileSync(config.data.scores, 'utf8')); } catch {}
@@ -111,10 +84,6 @@ function saveScore(fileName, scoreData) {
   fs.writeFileSync(config.data.scores, JSON.stringify(scores, null, 2), 'utf8');
 }
 
-/**
- * Load all persisted scores.
- * @returns {object} filename → scoreData map
- */
 function getScores() {
   try { return JSON.parse(fs.readFileSync(config.data.scores, 'utf8')); }
   catch { return {}; }
